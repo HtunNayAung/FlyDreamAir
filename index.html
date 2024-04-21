@@ -8,6 +8,10 @@
     <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
     rel="stylesheet"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="app.js" defer></script>
     <title>FlyDream Airline</title>
 </head>
 <body>
@@ -25,21 +29,28 @@
         </ul>
         <button class="btn">Contact</button>
     </nav>
-    <div class="image-container">
+    <div class="main-body">
         <img src="images/bg.webp" alt="">
         <div class="text-overlay">
             <h1>Welcome Aboard!</h1>
             <h4>Experience world-class service and seamless travel with us. Your journey begins now!</h4>
-
-            <section class="booking-container">
-                <div class="booking-nav">
-                    <span>BOOK TRIP</span>
-                    <span>MANAGE BOOKING</span>
-                    <span>FLIGHT STATUS</span>
-                </div>
-                <p>Hi, where you would like to go?</p>
-                <hr class="line">
-                <form>
+        </div>
+        <section class="booking-container">
+            <div class="booking-nav">
+                <span>BOOK TRIP</span>
+                <span>MANAGE BOOKING</span>
+                <span>FLIGHT STATUS</span>
+            </div>
+            <div class="trip-selection">
+                <p>Hi, where you would like to go?  </p>
+                <span>
+                    <input class="trip-selection" type="radio" name="'trip-type" value="One Way"> <span>One Way</span>  
+                    <input class="trip-selection" type="radio" name="'trip-type" value="Round Trip"><span>Round Trip</span>  
+                </span>
+            </div>
+            <hr class="line">
+            <form>
+                <div class="form-row">
                     <div class="form-group">
                         <span><i class="ri-map-pin-line"></i></span>
                         <div class="input-content">
@@ -66,34 +77,131 @@
                         <span><i class="ri-calendar-2-line"></i></span>
                         <div class="input-content">
                             <div class="input-group">
-                                <input type="text">
-                                <label for="">Departure</label>
+                                <input type="text" id="departure">
+                                <label for="departure">Departure</label>
                             </div>
                             <p>Add date</p>
                         </div>
                     </div>
         
-                    <div class="form-group">
+                    <div class="form-group return-group">
                         <span><i class="ri-calendar-2-line"></i></span>
                         <div class="input-content">
                             <div class="input-group">
-                                <input type="text">
-                                <label for="">Return</label>
+                                <input type="text" id="return">
+                                <label for="return">Return</label>
                             </div>
                             <p>Add date</p>
                         </div>
                     </div>
         
-                    <button class="btn"><i class="ri-search-line"></i></button>
-                </form>
-            </section>
-        </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <select name="flight-class">
+                            <option value="business"><div>Economy Class</div></option>
+                            <option value="economy"><span>Business Class</span></option>
+                            <option value="first"><span>First Class</span></option>
+                        </select>
+                    </div>
 
-        
+                    <div class="form-group">
+                        <span><i class="ri-user-line"></i></span>
+                        <div class="input-content">
+                            <div class="input-group">
+                                <input type="number" min="1" value="1">
+                                <label for="">Count</label>
+                            </div>
+                            <p>Passengers</p>
+                        </div>
+                    </div>
+                    <div></div>
+                    <button class="btn"><i class="ri-search-line"></i></button>
+                </div>
+            </form>
+        </section>
+
+        <section class="trendings-container">
+            <h1>Trendings in <span>SYDNEY</span></h1>
+
+            <section class="trendings-section">
+                <div class="trendings">
+                    <div class="trending-item">
+                        <img src="/images/bali.jpeg" alt="Bali">
+                        <div class="destination-info">
+                            <h3>Bali</h3>
+                            <p>Economy</p>
+                            <p>From <span>AUD 649</span></p>
+                        </div>
+                    </div>
+    
+                    <div class="trending-item">
+                        <img src="/images/singapore.jpeg" alt="Singapore">
+                        <div class="destination-info">
+                            <h3>Singapore</h3>
+                            <p>Economy</p>
+                            <p>From <span>AUD 894</span></p>
+                        </div>
+                    </div>
+    
+                    <div class="trending-item">
+                        <img src="/images/KL.jpeg" alt="Kuala Lumpur">
+                        <div class="destination-info">
+                            <h3>Kuala Lumpur</h3>
+                            <p>Economy</p>
+                            <p>From <span>AUD 889</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trendings">
+                    <div class="trending-item">
+                        <img src="/images/yangon.jpeg" alt="Yangon">
+                        <div class="destination-info">
+                            <h3>Yangon</h3>
+                            <p>Economy</p>
+                            <p>From <span>AUD 949</span></p>
+                        </div>
+                    </div>
+    
+                    <div class="trending-item">
+                        <img src="images/HCM.jpeg" alt="Ho Chi Minh">
+                        <div class="destination-info">
+                            <h3>Ho Chi Minh</h3>
+                            <p>Economy</p>
+                            <p>From <span>AUD 905</span></p>
+                        </div>
+                    </div>
+    
+                    <div class="trending-item">
+                        <img src="images/osaka.jpeg" alt="Osaka">
+                        <div class="destination-info">
+                            <h3>Osaka</h3>
+                            <p>Economy</p>
+                            <p>From <span>AUD 999</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <button class="btn">
+                View more deals
+            </button>
+        </section>
     </div>
 
-    
-    
-    
+    <footer class="footer">
+        <div class="footer-top">
+            <p>FlyDream Air &copy; 2024. All rights reserved.</p>
+        </div>
+        <div class="footer-bottom">
+            <p>
+                FlyDream Air would like to acknowledge the Traditional Custodians of the local lands and waterways on which we live, work and fly.
+            </p>
+            <p>
+                We pay our respects to Elders past and present.
+            </p>
+        </div>
+    </footer>
 </body>
 </html>
