@@ -84,14 +84,14 @@ body{
     cursor: pointer;
 }
 
-.booking-nav span:nth-child(1){
+.booking-nav span.active{
     color: white;
     background-color: var(--primaryColor);
 }
 
 .flight-heading-container {
     width: 70%;
-    margin: 20px auto; 
+    margin: 30px auto; 
     display: flex;
     justify-content: flex-start; 
     align-items: center;
@@ -117,7 +117,7 @@ body{
 .flight-details{
     display: flex;
     flex-direction: column;
-    border: 1px solid rgb(210, 206, 206);
+    border: 1px solid var(--primaryColor);
     width: 70%;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -165,7 +165,7 @@ body{
     font-weight: 500;
     color: white;
     background-color: var(--primaryColor);
-    border-radius: .5rem;
+    border-radius: .2rem;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -195,5 +195,172 @@ body{
 }
 
 #proceedBtn{
+    font-size: 13px;
+    margin-right: 40px;
+}
+
+
+.passenger-data-container, .passenger-warning{
+    width: 70%;
+    margin: 30px auto; 
+}
+
+.passenger-warning h3{
+    font-weight: 500;
+    font-size: 22px;
+    padding-bottom: 10px;
+}
+
+.passenger-heading{
+    border: 1px solid rgb(220, 215, 215);
+    padding: 10px;
+    background-color: var(--primaryColor);
+    color: white;
+}
+
+.personal-details, .contact-details{
+    border: 1px solid rgb(220, 215, 215);
+    border-top: none;
+    padding: 10px;
+}
+
+.personal-details{
+    border-bottom: none;
+}
+
+.personal-details h4, .contact-details h4{
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.personal-details-row, .contact-details-row{
+    display: flex;
+    justify-content: left;
+    margin-bottom: 45px;
+}
+
+#personal-second-row{
+    margin-bottom: 10px;
+}
+
+.passenger-heading span{
+    padding: 10px;
+    font-size: 1.5rem;
+    color: white;
+    border-radius: 1rem;
+}
+
+.input-group{
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.input-group label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(-30%);
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--textDark);
+    pointer-events: none;
+    transform: 0.3s;
+}
+
+.input-group input{
+    width: 100%;
+    padding: 10px 0;
+    padding-top: 20px;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid var(--primaryColor);
+    color: var(--textDark);
+}
+
+#title-group{
+    width:20%;
+    margin-left: 10px;
+}
+
+
+.nationality-container{
+    width: 20%;
+    margin-left: 10px;
+    margin-right: 50px;
+}
+
+.dropdown{
+    width: 100%;
+}
+
+.dropbtn {
+    background-color: #ffffff;
+    color: var(--textDark);
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid var(--primaryColor);
+    cursor: pointer;
+    width: 100%;
+}
+  
+  /* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    max-height: 150px; /* Maximum height to show 5 items */
+    overflow-y: auto; /* Enable vertical scrollbar */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+  
+
+.dropdown-content div{
+    color: var(--textDark);
+    padding: 12px 16px;
+    text-decoration: none;
+    width: 100%;
+}
+  
+.dropdown-content div:hover {
+    background-color: rgb(254, 254, 254);
+}
+  
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+  }
+
+#personal-second-row label{
+    transform: translateY(-30%);
+}
+
+#personal-second-row button{
+    margin-top: 20px;
+}
+
+.passport-container{
+    width: 20%;
+}
+
+.email-container{
+    margin-left: 10px;
+    margin-right: 100px;
+    width: 30%;
+}
+
+.ph-num-container{
+    width: 30%;
+}
+
+#nextBtn, #toPaymentBtn{
+    font-size: 13px;
     margin-right: 40px;
 }

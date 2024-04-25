@@ -93,7 +93,7 @@
             "destinationCity": "Hanoi",
             "departureTime": "08:45 AM",
             "duration": 12.5,
-            "price": 350
+            "price": 935
         },
         {
             "departureCity": "Sydney",
@@ -202,17 +202,17 @@
         {
             "departureCity": "Sydney",
             "destinationCity": "Melbourne",
-            "departureTime": "11:45 AM",
+            "departureTime": "08:45 AM",
             "duration": 1.55,
-            "price": 350,
+            "price": 70,
             "flightNo": "FD001"
         },
         {
             "departureCity": "Sydney",
             "destinationCity": "Melbourne",
-            "departureTime": "08:50 AM",
+            "departureTime": "11:50 AM",
             "duration": 1.55,
-            "price": 350,
+            "price": 70,
             "flightNo": "FD002"
         },
         {
@@ -220,7 +220,7 @@
             "destinationCity": "Melbourne",
             "departureTime": "05:45 PM",
             "duration": 1.55,
-            "price": 350,
+            "price": 70,
             "flightNo": "FD003"
         }
       ]

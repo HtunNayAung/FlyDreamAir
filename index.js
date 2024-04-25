@@ -16,12 +16,20 @@ $(document).ready(function() {
     });
 
     $('#searchButton').click(function(event) {
-        var origin = $('#origin').val();
-        var destination = $('#destination').val();
-        var departureDate = $('#departure').val();
+        const origin = $('#origin').val();
+        const destination = $('#destination').val();
+        const departureDate = $('#departure').val();
+        const count = $('#count').val();
         event.preventDefault();
-        var queryParams = `flights.html?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&departureDate=${encodeURIComponent(departureDate)}`;
-        window.location.href = queryParams;
+
+        sessionStorage.setItem('flightQuery', JSON.stringify({
+            origin: origin,
+            destination: destination,
+            departureDate: departureDate,
+            count: count
+        }));
+        // var queryParams = `flights.html?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&departureDate=${encodeURIComponent(departureDate)}`;
+        window.location.href = 'booking.html#flights';
     });
 
     
