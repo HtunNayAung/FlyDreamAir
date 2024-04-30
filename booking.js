@@ -203,6 +203,23 @@ const nationalities = [
     "Zambian",
     "Zimbabwean"
   ];
+
+
+const menuItems = [
+    { name: 'Sandwich', price: 12, image: 'images/sandwich.jpeg' },
+    { name: 'Seafood Pasta', price: 19, image: 'images/pasta.jpeg' },
+    { name: 'Coconut Rice', price: 16, image: 'images/coconut_rice.jpeg' },
+    { name: 'Beef Salad', price: 19, image: 'images/beef_salad.jpeg' },
+    { name: 'Noodle Soup', price: 15, image: 'images/noodle_sopu.jpeg' },
+    { name: 'Salmon Sushi', price: 11, image: 'images/sushi.jpeg' },
+    { name: 'Pad Thai', price: 13, image: 'images/padThai.jpeg' },
+    { name: 'Fried Chicken', price: 16, image: 'images/fried_chic.jpeg' },
+    { name: 'Orange Juice', price: 9, image: 'images/orange.jpeg' },
+    { name: 'Apple Juice', price: 9, image: 'images/apple.jpeg' },
+    { name: 'Lemon Juice', price: 9, image: 'images/lemon.jpeg' },
+    { name: 'Kiwi Juice', price: 9, image: 'images/kiwi.jpeg' }
+
+];
   
 
 
@@ -250,7 +267,6 @@ $(document).ready(function() {
         const destination = capitalize(flightData.destination);
         const departureDate = new Date(flightData.departureDate);
         const count = parseInt(flightData.count);
-        console.log(count);
         $('#flight-heading').html(` ${origin} <i class="ri-flight-takeoff-line"></i> ${destination}`);
 
 
@@ -335,8 +351,8 @@ $(document).ready(function() {
                     if (selectedFlight.length > 0) {
                         // Retrieve flight data from the selected flight details container
                         var flightData = {
-                            origin: selectedFlight.find('.row1:eq(0)').text().trim(),
-                            destination: selectedFlight.find('.row1:eq(2)').text().trim(),
+                            origin: capitalize(selectedFlight.find('.row1:eq(0)').text().trim()),
+                            destination: capitalize(selectedFlight.find('.row1:eq(2)').text().trim()),
                             departure: selectedFlight.find('.row2:eq(0)').text().trim(),
                             arrival: selectedFlight.find('.row2:eq(2)').text().trim(),
                             price: selectedFlight.find('.row1:eq(3)').text().trim(),
@@ -436,24 +452,302 @@ $(document).ready(function() {
                             </div>`);
 
     $(document).on('click', '.dropbtn', function() {
-        console.log("hi");
         populateDropdown(this);
-    })
+    });
 
     $('#nextBtn').click(function(){
         savePassengerData();
         window.location.hash = "seats";
         tabs.removeClass("active");
         $(".booking-nav span[data-tab='seats']").addClass("active");
-    })
+    });
 
     $('#toPaymentBtn').click(function(){
         savePassengerData();
         window.location.hash = "payment";
         tabs.removeClass("active");
         $(".booking-nav span[data-tab='payment']").addClass("active");
-    })
+    });
+
+    let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
+    let passengersData = JSON.parse(sessionStorage.getItem('passengerData'));
+    let seatSelectionText = `
+    <h4>${flight.origin} <i class="ri-flight-takeoff-line"></i> ${flight.destination}</h4>`
+
+    for(let i=0; i<passengersData.length; i++){
+        let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+        seatSelectionText += `<div class="each-passenger-seat" data-passenger="${fullName}">
+        
+        <h5>${fullName}</h5>
+        <p>Seat number: <span class="selected-seat-span">No seat selected</span></p>
+    </div>`;
+    }
+
+    $('.seat-selection').append(seatSelectionText);
+
+    const passengerSeats = {};
+    const confirmedSeats = new Map(); // Map to store confirmed seats for each passenger
+    const selectedSeats = {}; // Object to store selected seats for each passenger
+    const finished = {};
+
+    const passengers = document.querySelectorAll('.each-passenger-seat');
+
+    // Event listener for passenger selection
+    
+
+    // Function to update selected seat for a passenger
+    function updateSelectedSeat(passenger, seatNumber) {
+        const passengerElement = document.querySelector(`.each-passenger-seat[data-passenger="${passenger}"]`);
+        if (passengerElement) {
+            const selectedSeatSpanElement = passengerElement.querySelector('.selected-seat-span');
+            if (selectedSeatSpanElement) {
+                selectedSeatSpanElement.textContent = seatNumber;
+            }
+        }
+        passengerSeats[passenger] = seatNumber;
+    }
+
+    function findSeatContainer(seatNumber) {
+        const seats = document.querySelectorAll('.seat');
+        let seatContainer = null;
+    
+        seats.forEach(seat => {
+            if (seat.textContent.trim() === seatNumber) {
+                seatContainer = seat;
+                return; // Exit the loop once the seat is found
+            }
+        });
+    
+        return seatContainer;
+    }
+
+    // Function to show confirmation box for seat selection
+    function showConfirmationBox(passenger, seatNumber) {
+        const confirmationBox = document.createElement('div');
+        confirmationBox.innerHTML = `
+            <p>Confirm seat ${seatNumber} for ${passenger}?</p>
+            <button class="confirmSeatBtn">CONFIRM SEAT</button>
+        `;
+        confirmationBox.classList.add('confirmation-box');
+        // document.body.appendChild(confirmationBox);
+        
+        $(`.each-passenger-seat[data-passenger="${passenger}"]`).append(confirmationBox);
+
+        const confirmSeatBtn = confirmationBox.querySelector('.confirmSeatBtn');
+        confirmSeatBtn.addEventListener('click', function() {
+            // document.body.removeChild(confirmationBox);
+            $('.seat-selection .confirmation-box').remove();
+            if(finished[passenger]!=null){
+                finished[passenger].classList.remove('confirmed')
+            }
+            const selectedSeat = selectedSeats[passenger];
+            if (selectedSeat) {
+                selectedSeat.classList.add('confirmed');
+                confirmedSeats.set(passenger, seatNumber); 
+                finished[passenger] = findSeatContainer(seatNumber);
+            }
+        });
+    }
+
+    
+
+    // Event listener for seat selection
+    const seats = document.querySelectorAll('.seat');
+    seats.forEach(seat => {
+        seat.addEventListener('click', function() {
+            const selectedPassenger = document.querySelector('.each-passenger-seat.selected');
+            if (selectedPassenger) {
+                const passengerName = selectedPassenger.dataset.passenger;
+                const seatNumber = seat.textContent;;
+                // Check if seat is already confirmed
+                if (!isSeatNumberExists(confirmedSeats, seatNumber)) {
+                    // Remove 'selected' class from previously selected seat
+                    const prevSelectedSeat = selectedSeats[passengerName];
+                    if (prevSelectedSeat) {
+                        const confirmationBox = document.querySelector('.confirmation-box');
+                        if (confirmationBox) {
+                            confirmationBox.remove();
+                        }
+                        prevSelectedSeat.classList.remove('selected');
+                    }
+    
+                    // Update selected seat for the passenger
+                    updateSelectedSeat(passengerName, seatNumber);
+                    selectedSeats[passengerName] = seat;
+                    seat.classList.add('selected');
+                    showConfirmationBox(passengerName, seatNumber);
+    
+                    // // Reload the page
+                    // location.reload();
+                } else {
+                    alert('Seat already confirmed. Please choose another seat.');
+                }
+            }
+        });
+    });
+
+    passengers.forEach(passenger => {
+        passenger.addEventListener('click', function() {
+            passengers.forEach(p => p.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+
+
+
+    $('.seat-selection').append(`<div class="proceed-btn-container-in-seat">
+                                <button class="btn" id="nextAddOnsBtn">NEXT: ADD-ONS</button>
+                                <button class="btn" id="toPaymentBtnSeat">SKIP TO PAYMENT</button>
+                            </div>`);
+
+    
+    $('#toPaymentBtnSeat').click(function(){
+        sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
+            obj[key] = value;
+            return obj;
+        }, {})));
+        window.location.hash = "payment";
+        tabs.removeClass("active");
+        $(".booking-nav span[data-tab='payment']").addClass("active");
+    });
+
+    $('#nextAddOnsBtn').click(function(){
+        sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
+            obj[key] = value;
+            return obj;
+        }, {})));
+        window.location.hash = "addons";
+        tabs.removeClass("active");
+        $(".booking-nav span[data-tab='addons']").addClass("active");
+    });
+
+    const menuContainer = document.querySelector('.menus');
+    menuItems.forEach(item => {
+        const menuItem = createMenuItem(item);
+        menuContainer.appendChild(menuItem);
+    });
+
+    let seatConfirmed = JSON.parse(sessionStorage.getItem('seatConfirmed'));
+    let flightHeading = `
+    <h4>${flight.origin} <i class="ri-flight-takeoff-line"></i> ${flight.destination}</h4>`;
+
+    for(let i=0; i<passengersData.length; i++){
+        let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+        flightHeading += `<div class="each-passenger-order" data-passenger="${fullName}">
+            <h5>${fullName} <span> Seat Number: ${seatConfirmed[fullName]} </span></h5>
+            <div class="orders"></div>
+            <button class="orderBtn">Add Order</button>
+        </div>`;
+    }
+
+
+    $('.order-container').append(flightHeading);
+
+    $('.order-container').append(`<div class="proceed-btn-container-in-addon">
+                                <button class="btn" id="toPaymentBtnAddon">PROCEED TO PAYMENT</button>
+                            </div>`);
+
+    $(document).on('click', '.orderBtn', function() {
+        // Find the parent .each-passenger-order container
+        let passengerContainer = $(this).closest('.each-passenger-order');
+        // Get the passenger's full name from the data-passenger attribute
+        let passengerName = passengerContainer.attr('data-passenger');
+    
+        // Create a dropdown box for the menu items
+        let dropdown = $('<select class="menu-dropdown">');
+        // Append an empty option indicating no selection
+        dropdown.append($('<option>').text('Select item'));
+        // Append options for each menu item
+        // Assuming menuItems is an array containing the available menu items
+        menuItems.forEach(function(item) {
+            dropdown.append($('<option>').text(item.name));
+        });
+    
+        // Append the dropdown box to the .orders container inside the passenger container
+        passengerContainer.find('.orders').append(dropdown);
+    });
+    
+    $('#toPaymentBtnAddon').click(function(){
+        let orderedItems = {};
+
+        // Iterate over each passenger container
+        $('.each-passenger-order').each(function() {
+            // Get the passenger's full name
+            let passengerName = $(this).attr('data-passenger');
+            // Get the selected menu items for this passenger
+            let selectedItems = [];
+            $(this).find('.menu-dropdown').each(function() {
+                let selectedItem = $(this).val();
+                // Add the selected item to the array, if a valid selection is made
+                if (selectedItem !== 'Select item') {
+                    selectedItems.push(selectedItem);
+                } else{
+                    selectedItems.push('');
+                }
+            });
+            // Add the array of selected items to the orderedItems object
+            if (selectedItems.length > 0) {
+                orderedItems[passengerName] = selectedItems;
+            }
+        });
+
+        // Convert the orderedItems object to a JSON string
+        let orderedItemsJSON = JSON.stringify(orderedItems);
+
+        // Store the JSON string in session storage
+        sessionStorage.setItem('orderedItems', orderedItemsJSON);
+        window.location.hash = "payment";
+        tabs.removeClass("active");
+        $(".booking-nav span[data-tab='payment']").addClass("active");
+    });
+
+    if(window.location.hash === '#payment'){
+        let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
+        let orders =  JSON.parse(sessionStorage.getItem('orderedItems'));  
+        let passengers = JSON.parse(sessionStorage.getItem('passengerData'));
+        let seats = JSON.parse(sessionStorage.getItem('seatConfirmed'));
+
+        let completePassengers = [];
+        for(let i=0; i<passengers.length; i++){
+            let fullName = passengers[i]['personal'].title + ' ' + passengers[i]['personal'].firstName + ' ' + passengers[i]['personal'].lastName;
+            let passengerObj = {
+                ticketID : generateOrderNumber(),
+                personal : passengers[i].personal,
+                contact : passengers[i].contact,
+                seat : seats[fullName],
+                addOns : orders[fullName],
+                flight : flight
+            }
+            completePassengers.push(passengerObj);
+        }
+
+        sessionStorage.setItem('completeData',JSON.stringify(completePassengers));
+    }
 });
+
+function createMenuItem(item) {
+    const menuItem = document.createElement('div');
+    menuItem.classList.add('menu-item');
+    menuItem.innerHTML = `
+        <div class="food-img-container">
+        <img src="${item.image}" alt="${item.name}">
+        </div>
+        <div>
+        <h4>${item.name}</h4>
+        <p>${'$'+item.price}</p>
+        </div>
+    `;
+    return menuItem;
+}
+
+function isSeatNumberExists(seatMap, seatNumber) {
+    for (let value of seatMap.values()) {
+        if (value === seatNumber) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
 function fetchFlightData(origin, destination) {
@@ -506,9 +800,9 @@ function savePassengerData() {
 
         const passengerInfo = {
             personal: {
-                title: personalDetails.eq(0).val(),
-                firstName: personalDetails.eq(1).val(),
-                lastName: personalDetails.eq(2).val(),
+                title: capitalize(personalDetails.eq(0).val()),
+                firstName: capitalize(personalDetails.eq(1).val()),
+                lastName: capitalize(personalDetails.eq(2).val()),
                 nationality: nationality,
                 passport: personalDetails.eq(3).val(),
                 issuePlace: personalDetails.eq(4).val(),
@@ -524,4 +818,28 @@ function savePassengerData() {
     });
 
     sessionStorage.setItem('passengerData', JSON.stringify(passengerData));
+}
+
+
+function generateOrderNumber() {
+    // Generate a random 6-digit number for the order ID
+    const orderId = Math.floor(Math.random() * 900000) + 100000;
+  
+    // Generate a random two-letter prefix for the order type
+    const orderTypePrefix = String.fromCharCode(65 + Math.floor(Math.random() * 26)) + String.fromCharCode(65 + Math.floor(Math.random() * 26));
+  
+    // Generate a random two-digit year
+    const year = (new Date().getFullYear() % 100).toString().padStart(2, '0');
+  
+    // Generate a random two-digit month
+    const month = (Math.floor(Math.random() * 12) + 1).toString().padStart(2, '0');
+  
+    // Generate a random two-digit day
+    const day = (Math.floor(Math.random() * 28) + 1).toString().padStart(2, '0');
+  
+    // Combine all parts to form the order number
+    const orderNumber = `${orderTypePrefix}-${orderId}-${year}${month}${day}`;
+  
+    return orderNumber;
+  
 }
