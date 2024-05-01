@@ -8,201 +8,8 @@ const options = {
 };
 
 
-const nationalities = [
-    "Afghan",
-    "Albanian",
-    "Algerian",
-    "American",
-    "Andorran",
-    "Angolan",
-    "Antiguans",
-    "Argentinean",
-    "Armenian",
-    "Australian",
-    "Austrian",
-    "Azerbaijani",
-    "Bahamian",
-    "Bahraini",
-    "Bangladeshi",
-    "Barbadian",
-    "Barbudans",
-    "Batswana",
-    "Belarusian",
-    "Belgian",
-    "Belizean",
-    "Beninese",
-    "Bhutanese",
-    "Bolivian",
-    "Bosnian",
-    "Brazilian",
-    "British",
-    "Bruneian",
-    "Bulgarian",
-    "Burkinabe",
-    "Burmese",
-    "Burundian",
-    "Cambodian",
-    "Cameroonian",
-    "Canadian",
-    "Cape Verdean",
-    "Central African",
-    "Chadian",
-    "Chilean",
-    "Chinese",
-    "Colombian",
-    "Comoran",
-    "Congolese",
-    "Costa Rican",
-    "Croatian",
-    "Cuban",
-    "Cypriot",
-    "Czech",
-    "Danish",
-    "Djibouti",
-    "Dominican",
-    "Dutch",
-    "East Timorese",
-    "Ecuadorean",
-    "Egyptian",
-    "Emirian",
-    "Equatorial Guinean",
-    "Eritrean",
-    "Estonian",
-    "Ethiopian",
-    "Fijian",
-    "Filipino",
-    "Finnish",
-    "French",
-    "Gabonese",
-    "Gambian",
-    "Georgian",
-    "German",
-    "Ghanaian",
-    "Greek",
-    "Grenadian",
-    "Guatemalan",
-    "Guinea-Bissauan",
-    "Guinean",
-    "Guyanese",
-    "Haitian",
-    "Herzegovinian",
-    "Honduran",
-    "Hungarian",
-    "I-Kiribati",
-    "Icelander",
-    "Indian",
-    "Indonesian",
-    "Iranian",
-    "Iraqi",
-    "Irish",
-    "Israeli",
-    "Italian",
-    "Ivorian",
-    "Jamaican",
-    "Japanese",
-    "Jordanian",
-    "Kazakhstani",
-    "Kenyan",
-    "Kittian and Nevisian",
-    "Kuwaiti",
-    "Kyrgyz",
-    "Laotian",
-    "Latvian",
-    "Lebanese",
-    "Liberian",
-    "Libyan",
-    "Liechtensteiner",
-    "Lithuanian",
-    "Luxembourger",
-    "Macedonian",
-    "Malagasy",
-    "Malawian",
-    "Malaysian",
-    "Maldivian",
-    "Malian",
-    "Maltese",
-    "Marshallese",
-    "Mauritanian",
-    "Mauritian",
-    "Mexican",
-    "Micronesian",
-    "Moldovan",
-    "Monacan",
-    "Mongolian",
-    "Moroccan",
-    "Mosotho",
-    "Motswana",
-    "Mozambican",
-    "Namibian",
-    "Nauruan",
-    "Nepalese",
-    "New Zealander",
-    "Nicaraguan",
-    "Nigerian",
-    "Nigerien",
-    "North Korean",
-    "Northern Irish",
-    "Norwegian",
-    "Omani",
-    "Pakistani",
-    "Palauan",
-    "Panamanian",
-    "Papua New Guinean",
-    "Paraguayan",
-    "Peruvian",
-    "Polish",
-    "Portuguese",
-    "Qatari",
-    "Romanian",
-    "Russian",
-    "Rwandan",
-    "Saint Lucian",
-    "Salvadoran",
-    "Samoan",
-    "San Marinese",
-    "Sao Tomean",
-    "Saudi",
-    "Scottish",
-    "Senegalese",
-    "Serbian",
-    "Seychellois",
-    "Sierra Leonean",
-    "Singaporean",
-    "Slovakian",
-    "Slovenian",
-    "Solomon Islander",
-    "Somali",
-    "South African",
-    "South Korean",
-    "Spanish",
-    "Sri Lankan",
-    "Sudanese",
-    "Surinamer",
-    "Swazi",
-    "Swedish",
-    "Swiss",
-    "Syrian",
-    "Taiwanese",
-    "Tajik",
-    "Tanzanian",
-    "Thai",
-    "Togolese",
-    "Tongan",
-    "Trinidadian or Tobagonian",
-    "Tunisian",
-    "Turkish",
-    "Tuvaluan",
-    "Ugandan",
-    "Ukrainian",
-    "Uruguayan",
-    "Uzbekistani",
-    "Venezuelan",
-    "Vietnamese",
-    "Welsh",
-    "Yemenite",
-    "Zambian",
-    "Zimbabwean"
-  ];
+const nationalities = ["Afghan","Albanian","Algerian","American","Andorran","Angolan","Antiguans","Argentinean","Armenian","Australian","Austrian","Azerbaijani","Bahamian","Bahraini","Bangladeshi","Barbadian","Barbudans","Batswana","Belarusian","Belgian","Belizean","Beninese","Bhutanese","Bolivian","Bosnian","Brazilian","British","Bruneian","Bulgarian","Burkinabe","Burmese","Burundian","Cambodian","Cameroonian","Canadian","Cape Verdean","Central African","Chadian","Chilean","Chinese","Colombian","Comoran","Congolese","Costa Rican","Croatian","Cuban","Cypriot","Czech","Danish","Djibouti","Dominican","Dutch","East Timorese","Ecuadorean","Egyptian","Emirian","Equatorial Guinean","Eritrean","Estonian","Ethiopian","Fijian","Filipino","Finnish","French","Gabonese","Gambian","Georgian","German","Ghanaian","Greek","Grenadian","Guatemalan","Guinea-Bissauan","Guinean","Guyanese","Haitian","Herzegovinian","Honduran","Hungarian","I-Kiribati","Icelander","Indian","Indonesian","Iranian","Iraqi","Irish","Israeli","Italian","Ivorian","Jamaican","Japanese","Jordanian","Kazakhstani","Kenyan","Kittian and Nevisian","Kuwaiti","Kyrgyz","Laotian","Latvian","Lebanese","Liberian","Libyan","Liechtensteiner","Lithuanian","Luxembourger","Macedonian","Malagasy","Malawian","Malaysian","Maldivian","Malian","Maltese","Marshallese","Mauritanian","Mauritian","Mexican","Micronesian","Moldovan","Monacan","Mongolian","Moroccan","Mosotho","Motswana","Mozambican","Namibian","Nauruan","Nepalese","New Zealander","Nicaraguan","Nigerian","Nigerien","North Korean","Northern Irish","Norwegian","Omani","Pakistani","Palauan","Panamanian","Papua New Guinean","Paraguayan","Peruvian","Polish","Portuguese","Qatari","Romanian","Russian","Rwandan","Saint Lucian","Salvadoran","Samoan","San Marinese","Sao Tomean","Saudi","Scottish","Senegalese","Serbian","Seychellois","Sierra Leonean","Singaporean","Slovakian","Slovenian","Solomon Islander","Somali","South African","South Korean","Spanish","Sri Lankan","Sudanese","Surinamer","Swazi","Swedish","Swiss","Syrian","Taiwanese","Tajik","Tanzanian","Thai","Togolese","Tongan","Trinidadian or Tobagonian","Tunisian","Turkish","Tuvaluan","Ugandan","Ukrainian","Uruguayan","Uzbekistani","Venezuelan","Vietnamese","Welsh","Yemenite","Zambian","Zimbabwean"];
+
 
 
 const menuItems = [
@@ -220,6 +27,9 @@ const menuItems = [
     { name: 'Kiwi Juice', price: 9, image: 'images/kiwi.jpeg' }
 
 ];
+
+const largeSeats = ['1A', '1B', '1C', '1D', '1E', '1F', '2A', '2B', '2C', '2D', '2E', '2F'];
+const largeSeatFare = 35;
   
 
 
@@ -253,6 +63,10 @@ $(document).ready(function() {
                 $(this).hide();
             }
         });
+    }
+
+    if(window.location.hash === '#passengers'){
+        $('#passengers').addClass("active");
     }
 
     // Initial tab display based on hash fragment
@@ -362,7 +176,6 @@ $(document).ready(function() {
                         window.location.hash = "passengers";
                         tabs.removeClass("active");
                         $(".booking-nav span[data-tab='passengers']").addClass("active");
-
                         // // Store flight data in session storage
                         sessionStorage.setItem('selectedFlight', JSON.stringify(flightData));
                     } else{
@@ -418,7 +231,7 @@ $(document).ready(function() {
                         </div>
 
                         <div class="input-group passport-container">
-                            <input type="text" id="expiry" name="expiry">
+                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY">
                             <label for="expiry">Expiry Date</label>
                         </div>
                 </div>
@@ -460,6 +273,156 @@ $(document).ready(function() {
         window.location.hash = "seats";
         tabs.removeClass("active");
         $(".booking-nav span[data-tab='seats']").addClass("active");
+        // location.reload();
+        confirmedSeats = selectSeat();
+        $('#toPaymentBtnSeat').click(function(){
+            sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
+                obj[key] = value;
+                return obj;
+            }, {})));
+            window.location.hash = "payment";
+            tabs.removeClass("active");
+            $(".booking-nav span[data-tab='payment']").addClass("active");
+            
+        });
+    
+        $('#nextAddOnsBtn').click(function(){
+            sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
+                obj[key] = value;
+                return obj;
+            }, {})));
+            window.location.hash = "addons";
+            tabs.removeClass("active");
+            $(".booking-nav span[data-tab='addons']").addClass("active");
+            addOnService();
+            $('#toPaymentBtnAddon').click(function(){
+                let orderedItems = {};
+        
+                // Iterate over each passenger container
+                $('.each-passenger-order').each(function() {
+                    // Get the passenger's full name
+                    let passengerName = $(this).attr('data-passenger');
+                    // Get the selected menu items for this passenger
+                    let selectedItems = [];
+                    $(this).find('.menu-dropdown').each(function() {
+                        let selectedItem = $(this).val();
+                        // Add the selected item to the array, if a valid selection is made
+                        if (selectedItem !== 'Select item') {
+                            selectedItems.push(selectedItem);
+                        }
+                    });
+                    // Add the array of selected items to the orderedItems object
+                    if (selectedItems.length > 0) {
+                        orderedItems[passengerName] = selectedItems;
+                    }
+                });
+        
+                // Convert the orderedItems object to a JSON string
+                let orderedItemsJSON = JSON.stringify(orderedItems);
+        
+                // Store the JSON string in session storage
+                sessionStorage.setItem('orderedItems', orderedItemsJSON);
+                window.location.hash = "payment";
+                tabs.removeClass("active");
+                $(".booking-nav span[data-tab='payment']").addClass("active");
+
+
+                if(window.location.hash === '#payment'){
+                    let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
+                    let orders =  JSON.parse(sessionStorage.getItem('orderedItems'));  
+                    let passengersData = JSON.parse(sessionStorage.getItem('passengerData'));
+                    let seats = JSON.parse(sessionStorage.getItem('seatConfirmed'));
+                    let completePassengers = [];
+                    
+                    for(let i=0; i<passengersData.length; i++){
+                        let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+                        let passengerObj = {
+                            ticketID : generateOrderNumber(),
+                            personal : passengersData[i].personal,
+                            contact : passengersData[i].contact,
+                            seat : seats[fullName],
+                            addOns : orders[fullName],
+                            flight : flight
+                        }
+                        completePassengers.push(passengerObj);
+                    }
+            
+                    sessionStorage.setItem('completeData',JSON.stringify(completePassengers));
+
+                    let flightHeading = `<p id="first-heading">${flight.origin} <i class="ri-flight-takeoff-line"></i>  ${flight.destination}</p> <p>Departure: ${flight.departure}</p><p> Arrival: ${flight.arrival}</p> <p>Flight Number: ${flight.flightNo}</p>`;
+                    $('.flight-heading').append(flightHeading);
+
+                    for(let i=0; i<passengersData.length; i++){
+                        let completePassengerText = '';
+                        let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+                        completePassengerText += `<div class="complete-each-passenger">
+                        <h1><i class="ri-user-line"></i></span> Passenger ${i+1}</h1>
+                        <div class="name-and-seat">
+                            <div>Full Name: ${fullName}</div>
+                            <div>Seat Number: ${seats[fullName]}</div>
+                        </div>
+                        
+                        <p>Contact email: ${passengersData[i]['contact'].email }</p>`;
+                        let addOnsText = '';
+                        if(!orders.hasOwnProperty(fullName)){
+                            addOnsText += 'None';
+                        } else{
+                            for(let j=0; j<orders[fullName].length; j++){
+                                addOnsText += orders[fullName][j] + ', ';
+                            }
+
+                            addOnsText = addOnsText.slice(0,-2);
+                        }
+
+                        completePassengerText += `<p>Add-on service: ${addOnsText}</p>
+                            </div>`;
+
+                        $('.complete-passenger-container').append(completePassengerText);
+                    }
+
+                    let totalPrice= 0;
+
+                    for(let i=0; i<passengersData.length; i++){
+                        let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+                        let basePrice = parseInt(flight.price.split(" ")[0]);
+                        let billLine = `<div class="invoice-details">
+                                <p>Base Fare ${seats[fullName]}</p>
+                                <p><span>A$ ${basePrice}</span></p>
+                            </div>`;
+                        totalPrice += basePrice;
+                        if(largeSeats.includes(seats[fullName])){
+                            billLine += `<div class="invoice-details">
+                                <p>Large Seat Fare ${seats[fullName]}</p>
+                                <p><span>A$ ${largeSeatFare}</span></p>
+                            </div>`
+                            totalPrice += largeSeatFare;
+                        }
+                        if(orders.hasOwnProperty(fullName)){
+                            for(let j=0;j<orders[fullName].length;j++){
+                                billLine += `<div class="invoice-details">
+                                    <p>Add-on Fare: ${orders[fullName][j]}</p>
+                                    <p><span>A$ ${getPriceByName(orders[fullName][j])}</span></p>
+                                </div>`
+                                totalPrice += getPriceByName(orders[fullName][j]);
+                            }
+                        }
+
+
+                        $('.invoice-details-container').append(billLine);
+                    }
+
+                    let totalPriceLine = `<div class="invoice-details id="totalAmount">
+                        <p>Total Amount</p>
+                        <p><span>A$ ${totalPrice}</span></p>
+                    </div>`
+                    $('.invoice-details-container').append(totalPriceLine);
+                    
+                }
+                
+            });
+
+
+        });
     });
 
     $('#toPaymentBtn').click(function(){
@@ -467,166 +430,58 @@ $(document).ready(function() {
         window.location.hash = "payment";
         tabs.removeClass("active");
         $(".booking-nav span[data-tab='payment']").addClass("active");
+       
+
     });
-
-    let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
-    let passengersData = JSON.parse(sessionStorage.getItem('passengerData'));
-    let seatSelectionText = `
-    <h4>${flight.origin} <i class="ri-flight-takeoff-line"></i> ${flight.destination}</h4>`
-
-    for(let i=0; i<passengersData.length; i++){
-        let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
-        seatSelectionText += `<div class="each-passenger-seat" data-passenger="${fullName}">
-        
-        <h5>${fullName}</h5>
-        <p>Seat number: <span class="selected-seat-span">No seat selected</span></p>
-    </div>`;
-    }
-
-    $('.seat-selection').append(seatSelectionText);
-
-    const passengerSeats = {};
-    const confirmedSeats = new Map(); // Map to store confirmed seats for each passenger
-    const selectedSeats = {}; // Object to store selected seats for each passenger
-    const finished = {};
-
-    const passengers = document.querySelectorAll('.each-passenger-seat');
-
-    // Event listener for passenger selection
     
 
-    // Function to update selected seat for a passenger
-    function updateSelectedSeat(passenger, seatNumber) {
-        const passengerElement = document.querySelector(`.each-passenger-seat[data-passenger="${passenger}"]`);
-        if (passengerElement) {
-            const selectedSeatSpanElement = passengerElement.querySelector('.selected-seat-span');
-            if (selectedSeatSpanElement) {
-                selectedSeatSpanElement.textContent = seatNumber;
-            }
-        }
-        passengerSeats[passenger] = seatNumber;
-    }
+    const payNowBtn = document.getElementById('payNowBtn');
 
-    function findSeatContainer(seatNumber) {
-        const seats = document.querySelectorAll('.seat');
-        let seatContainer = null;
-    
-        seats.forEach(seat => {
-            if (seat.textContent.trim() === seatNumber) {
-                seatContainer = seat;
-                return; // Exit the loop once the seat is found
-            }
-        });
-    
-        return seatContainer;
-    }
+                    payNowBtn.addEventListener('click', function() {
 
-    // Function to show confirmation box for seat selection
-    function showConfirmationBox(passenger, seatNumber) {
-        const confirmationBox = document.createElement('div');
-        confirmationBox.innerHTML = `
-            <p>Confirm seat ${seatNumber} for ${passenger}?</p>
-            <button class="confirmSeatBtn">CONFIRM SEAT</button>
-        `;
-        confirmationBox.classList.add('confirmation-box');
-        // document.body.appendChild(confirmationBox);
-        
-        $(`.each-passenger-seat[data-passenger="${passenger}"]`).append(confirmationBox);
+                        window.location.href = 'success.html';
+                        console.log("hi");
+                        // Get form data
+                        const cardNumber = document.getElementById('cardNumber').value;
+                        const cardName = document.getElementById('cardName').value;
+                        const cvv = document.getElementById('cvv').value;
+                        const paidTime = new Date().toISOString(); // Get current time
 
-        const confirmSeatBtn = confirmationBox.querySelector('.confirmSeatBtn');
-        confirmSeatBtn.addEventListener('click', function() {
-            // document.body.removeChild(confirmationBox);
-            $('.seat-selection .confirmation-box').remove();
-            if(finished[passenger]!=null){
-                finished[passenger].classList.remove('confirmed')
-            }
-            const selectedSeat = selectedSeats[passenger];
-            if (selectedSeat) {
-                selectedSeat.classList.add('confirmed');
-                confirmedSeats.set(passenger, seatNumber); 
-                finished[passenger] = findSeatContainer(seatNumber);
-            }
-        });
-    }
-
-    
-
-    // Event listener for seat selection
-    const seats = document.querySelectorAll('.seat');
-    seats.forEach(seat => {
-        seat.addEventListener('click', function() {
-            const selectedPassenger = document.querySelector('.each-passenger-seat.selected');
-            if (selectedPassenger) {
-                const passengerName = selectedPassenger.dataset.passenger;
-                const seatNumber = seat.textContent;;
-                // Check if seat is already confirmed
-                if (!isSeatNumberExists(confirmedSeats, seatNumber)) {
-                    // Remove 'selected' class from previously selected seat
-                    const prevSelectedSeat = selectedSeats[passengerName];
-                    if (prevSelectedSeat) {
-                        const confirmationBox = document.querySelector('.confirmation-box');
-                        if (confirmationBox) {
-                            confirmationBox.remove();
+                        if (!cardNumber || !cardName || !cvv) {
+                            alert('Please fill in all fields.');
+                            return;
                         }
-                        prevSelectedSeat.classList.remove('selected');
-                    }
-    
-                    // Update selected seat for the passenger
-                    updateSelectedSeat(passengerName, seatNumber);
-                    selectedSeats[passengerName] = seat;
-                    seat.classList.add('selected');
-                    showConfirmationBox(passengerName, seatNumber);
-    
-                    // // Reload the page
-                    // location.reload();
-                } else {
-                    alert('Seat already confirmed. Please choose another seat.');
-                }
-            }
-        });
-    });
 
-    passengers.forEach(passenger => {
-        passenger.addEventListener('click', function() {
-            passengers.forEach(p => p.classList.remove('selected'));
-            this.classList.add('selected');
-        });
-    });
+                        // Create data object
+                        const paymentData = {
+                            cardNumber: cardNumber,
+                            cardName: cardName,
+                            paidTime: paidTime
+                        };
+
+                        console.log(completePassengers)
 
 
+                        for (let i = 0; i < completePassengers.length; i++) {
+                            // Append the paymentData to the current object
+                            completePassengers[i].paymentData = paymentData;
+                        }
+                        saveData(completePassengers);
+                    })
+   
 
-    $('.seat-selection').append(`<div class="proceed-btn-container-in-seat">
-                                <button class="btn" id="nextAddOnsBtn">NEXT: ADD-ONS</button>
-                                <button class="btn" id="toPaymentBtnSeat">SKIP TO PAYMENT</button>
-                            </div>`);
+});
 
-    
-    $('#toPaymentBtnSeat').click(function(){
-        sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
-            obj[key] = value;
-            return obj;
-        }, {})));
-        window.location.hash = "payment";
-        tabs.removeClass("active");
-        $(".booking-nav span[data-tab='payment']").addClass("active");
-    });
-
-    $('#nextAddOnsBtn').click(function(){
-        sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
-            obj[key] = value;
-            return obj;
-        }, {})));
-        window.location.hash = "addons";
-        tabs.removeClass("active");
-        $(".booking-nav span[data-tab='addons']").addClass("active");
-    });
-
+function addOnService(){
     const menuContainer = document.querySelector('.menus');
     menuItems.forEach(item => {
         const menuItem = createMenuItem(item);
         menuContainer.appendChild(menuItem);
     });
-
+    let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
+    let orders =  JSON.parse(sessionStorage.getItem('orderedItems'));  
+    let passengersData = JSON.parse(sessionStorage.getItem('passengerData'));
+    let seats = JSON.parse(sessionStorage.getItem('seatConfirmed'));
     let seatConfirmed = JSON.parse(sessionStorage.getItem('seatConfirmed'));
     let flightHeading = `
     <h4>${flight.origin} <i class="ri-flight-takeoff-line"></i> ${flight.destination}</h4>`;
@@ -666,64 +521,140 @@ $(document).ready(function() {
         // Append the dropdown box to the .orders container inside the passenger container
         passengerContainer.find('.orders').append(dropdown);
     });
-    
-    $('#toPaymentBtnAddon').click(function(){
-        let orderedItems = {};
+}
 
-        // Iterate over each passenger container
-        $('.each-passenger-order').each(function() {
-            // Get the passenger's full name
-            let passengerName = $(this).attr('data-passenger');
-            // Get the selected menu items for this passenger
-            let selectedItems = [];
-            $(this).find('.menu-dropdown').each(function() {
-                let selectedItem = $(this).val();
-                // Add the selected item to the array, if a valid selection is made
-                if (selectedItem !== 'Select item') {
-                    selectedItems.push(selectedItem);
-                } else{
-                    selectedItems.push('');
-                }
-            });
-            // Add the array of selected items to the orderedItems object
-            if (selectedItems.length > 0) {
-                orderedItems[passengerName] = selectedItems;
-            }
-        });
+function updateSelectedSeat(passengerSeats, passenger, seatNumber) {
+    const passengerElement = document.querySelector(`.each-passenger-seat[data-passenger="${passenger}"]`);
+    if (passengerElement) {
+        const selectedSeatSpanElement = passengerElement.querySelector('.selected-seat-span');
+        if (selectedSeatSpanElement) {
+            selectedSeatSpanElement.textContent = seatNumber;
+        }
+    }
+    passengerSeats[passenger] = seatNumber;
+}
 
-        // Convert the orderedItems object to a JSON string
-        let orderedItemsJSON = JSON.stringify(orderedItems);
+function findSeatContainer(seatNumber) {
+    const seats = document.querySelectorAll('.seat');
+    let seatContainer = null;
 
-        // Store the JSON string in session storage
-        sessionStorage.setItem('orderedItems', orderedItemsJSON);
-        window.location.hash = "payment";
-        tabs.removeClass("active");
-        $(".booking-nav span[data-tab='payment']").addClass("active");
+    seats.forEach(seat => {
+        if (seat.textContent.trim() === seatNumber) {
+            seatContainer = seat;
+            return; // Exit the loop once the seat is found
+        }
     });
 
-    if(window.location.hash === '#payment'){
-        let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
-        let orders =  JSON.parse(sessionStorage.getItem('orderedItems'));  
-        let passengers = JSON.parse(sessionStorage.getItem('passengerData'));
-        let seats = JSON.parse(sessionStorage.getItem('seatConfirmed'));
+    return seatContainer;
+}
 
-        let completePassengers = [];
-        for(let i=0; i<passengers.length; i++){
-            let fullName = passengers[i]['personal'].title + ' ' + passengers[i]['personal'].firstName + ' ' + passengers[i]['personal'].lastName;
-            let passengerObj = {
-                ticketID : generateOrderNumber(),
-                personal : passengers[i].personal,
-                contact : passengers[i].contact,
-                seat : seats[fullName],
-                addOns : orders[fullName],
-                flight : flight
-            }
-            completePassengers.push(passengerObj);
+
+function showConfirmationBox(finished, selectedSeats, confirmedSeats, passenger, seatNumber) {
+    const confirmationBox = document.createElement('div');
+    confirmationBox.innerHTML = `
+        <p>Confirm seat ${seatNumber} for ${passenger}?</p>
+        <button class="confirmSeatBtn">CONFIRM SEAT</button>
+    `;
+    confirmationBox.classList.add('confirmation-box');
+ 
+    $(`.each-passenger-seat[data-passenger="${passenger}"]`).append(confirmationBox);
+
+    const confirmSeatBtn = confirmationBox.querySelector('.confirmSeatBtn');
+    confirmSeatBtn.addEventListener('click', function() {
+        $('.seat-selection .confirmation-box').remove();
+        if(finished[passenger]!=null){
+            finished[passenger].classList.remove('confirmed')
         }
+        const selectedSeat = selectedSeats[passenger];
+        if (selectedSeat) {
+            selectedSeat.classList.add('confirmed');
+            confirmedSeats.set(passenger, seatNumber); 
+            finished[passenger] = findSeatContainer(seatNumber);
+        }
+    });
+}
 
-        sessionStorage.setItem('completeData',JSON.stringify(completePassengers));
-    }
-});
+function selectSeat(){
+    if(window.location.hash === '#seats'){
+            let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
+            let passengersData = JSON.parse(sessionStorage.getItem('passengerData'));
+    
+            const passengerSeats = {};
+            const confirmedSeats = new Map(); // Map to store confirmed seats for each passenger
+            const selectedSeats = {}; // Object to store selected seats for each passenger
+            const finished = {}; // Function to update selected seat for a passenger
+    
+    
+            let seatSelectionText = `
+            <h4>${flight.origin} <i class="ri-flight-takeoff-line"></i> ${flight.destination}</h4>`;
+        
+            for(let i=0; i<passengersData.length; i++){
+                let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+                seatSelectionText += `<div class="each-passenger-seat" data-passenger="${fullName}">
+                
+                <h5>${fullName}</h5>
+                <p>Seat number: <span class="selected-seat-span">No seat selected</span></p>
+            </div>`;
+    
+    
+             // Event listener for seat selection
+            const seats = document.querySelectorAll('.seat');
+            seats.forEach(seat => {
+                seat.addEventListener('click', function() {
+                    const selectedPassenger = document.querySelector('.each-passenger-seat.selected');
+                    if (selectedPassenger) {
+                        const passengerName = selectedPassenger.dataset.passenger;
+                        const seatNumber = seat.textContent;;
+                        // Check if seat is already confirmed
+                        if (!isSeatNumberExists(confirmedSeats, seatNumber)) {
+                            // Remove 'selected' class from previously selected seat
+                            const prevSelectedSeat = selectedSeats[passengerName];
+                            if (prevSelectedSeat) {
+                                const confirmationBox = document.querySelector('.confirmation-box');
+                                if (confirmationBox) {
+                                    confirmationBox.remove();
+                                }
+                                prevSelectedSeat.classList.remove('selected');
+                            }
+            
+                            // Update selected seat for the passenger
+                            updateSelectedSeat(passengerSeats, passengerName, seatNumber);
+                            selectedSeats[passengerName] = seat;
+                            seat.classList.add('selected');
+                            showConfirmationBox(finished, selectedSeats, confirmedSeats, passengerName, seatNumber);
+            
+                            // // Reload the page
+                            // location.reload();
+                        } else {
+                            alert('Seat already confirmed. Please choose another seat.');
+                        }
+                    }
+                });
+            });
+            }
+        
+            $('.seat-selection').append(seatSelectionText);
+            
+        
+            const passengers = document.querySelectorAll('.each-passenger-seat');
+    
+            passengers.forEach(passenger => {
+                passenger.addEventListener('click', function() {
+                    passengers.forEach(p => p.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+    
+            $('.seat-selection').append(`<div class="proceed-btn-container-in-seat">
+                <button class="btn" id="nextAddOnsBtn">NEXT: ADD-ONS</button>
+                <button class="btn" id="toPaymentBtnSeat">SKIP TO PAYMENT</button>
+                </div>`);
+
+            return confirmedSeats;
+            
+        
+        }
+}
 
 function createMenuItem(item) {
     const menuItem = document.createElement('div');
@@ -822,24 +753,33 @@ function savePassengerData() {
 
 
 function generateOrderNumber() {
-    // Generate a random 6-digit number for the order ID
     const orderId = Math.floor(Math.random() * 900000) + 100000;
-  
-    // Generate a random two-letter prefix for the order type
     const orderTypePrefix = String.fromCharCode(65 + Math.floor(Math.random() * 26)) + String.fromCharCode(65 + Math.floor(Math.random() * 26));
-  
-    // Generate a random two-digit year
     const year = (new Date().getFullYear() % 100).toString().padStart(2, '0');
-  
-    // Generate a random two-digit month
     const month = (Math.floor(Math.random() * 12) + 1).toString().padStart(2, '0');
-  
-    // Generate a random two-digit day
     const day = (Math.floor(Math.random() * 28) + 1).toString().padStart(2, '0');
-  
-    // Combine all parts to form the order number
     const orderNumber = `${orderTypePrefix}-${orderId}-${year}${month}${day}`;
   
     return orderNumber;
   
 }
+
+function getPriceByName(itemName) {
+    // Find the menu item with the matching name
+    const menuItem = menuItems.find(item => item.name === itemName);
+    // If a matching item is found, return its price
+    if (menuItem) {
+        return menuItem.price;
+    } else {
+        // If no matching item is found, return null or handle the case accordingly
+        return null;
+    }
+}
+
+function saveData(data) {
+    const jsonData = JSON.stringify(data);
+
+    // Save data to localStorage
+    localStorage.setItem('bookingsData', jsonData);
+}
+

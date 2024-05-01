@@ -588,3 +588,176 @@ body{
     margin-top: 30px;
     font-size: 13px;
 }
+
+.payment-main-container{
+    width: 80%;
+    margin: 30px auto; 
+}
+
+.flight-and-passenger-container{
+    display: flex;
+    justify-content:center;
+    align-items:start;
+}
+
+.flight-and-bill-container{
+    width: 30%;
+}
+
+.flight-heading{
+    /* width: 30%; */
+    border: 1px solid var(--primaryColor);
+    background-color: rgb(242, 246, 250);
+    padding-bottom: 20px;
+    margin-top: 20px;
+}
+
+.flight-heading h1{
+    padding: 10px 25px;
+    font-size: 20px;
+    border-bottom: 1px solid var(--primaryColor);
+    font-weight: 500;
+    text-align: center;
+    background-color: var(--primaryColor);
+    color: white;
+    margin-bottom: 10px;
+}
+
+.flight-heading p{
+    font-weight: 400;
+    font-size: 18px;
+    padding: 10px 25px;
+}
+
+#first-heading{
+    font-size: 23px;
+    font-weight: 600;
+}
+
+
+.passenger-and-payment-container{
+    width: 50%;
+
+ 
+    margin-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 5%;
+}
+
+.complete-each-passenger {
+    margin-bottom: 20px;
+    border: 1px solid var(--primaryColor);
+    background-color: rgb(242, 246, 250);
+}
+
+.complete-each-passenger h1{
+    padding: 10px 25px;
+    font-size: 18px;
+    border-bottom: 1px solid var(--primaryColor);
+    font-weight: 500;
+    text-align: left;
+    background-color: var(--primaryColor);
+    color: white;
+    margin-bottom: 10px;
+}
+
+.name-and-seat{
+    display: flex;
+    gap: 10%;
+    padding: 10px 25px;
+}
+
+.name-and-seat div{
+    font-weight: 400;
+    font-size: 18px;
+    /* padding-left: 25px; */
+}
+
+.complete-each-passenger p{
+    font-weight: 300;
+    font-size: 15px;
+    padding: 10px 25px;
+}
+
+.invoice-container{
+    /* width: 30%; */
+    border: 1px solid var(--primaryColor);
+    background-color: rgb(242, 246, 250);
+    padding-bottom: 20px;
+    margin-top: 50px;
+}
+
+.invoice-container h1{
+    padding: 10px 25px;
+    font-size: 20px;
+    border-bottom: 1px solid var(--primaryColor);
+    font-weight: 500;
+    text-align: center;
+    background-color: rgb(88, 160, 165);
+    color: white;
+    margin-bottom: 10px;
+}
+
+
+.invoice-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align contents to the left */
+}
+
+.invoice-details {
+    display: flex;
+    justify-content: space-between; /* Align items to each end */
+    width: 100%; /* Ensure full width */
+}
+
+.invoice-details p {
+    margin-left: 20px;
+}
+
+.invoice-details span {
+    margin-left: auto; /* Push span to the right */
+    margin-right: 20px;
+}
+
+
+#totalAmount{
+    margin-top: 15px;
+}
+
+.payment-form {
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid var(--primaryColor);
+    border-radius: 5px;
+    margin-top: 60px;
+}
+
+.payment-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.payment-form input[type="text"],
+.payment-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--primaryColor);
+    border-radius: 3px;
+}
+
+.payment-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primaryColor);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.payment-form button:hover {
+    background-color: #0056b3;
+}

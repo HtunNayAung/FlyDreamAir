@@ -30,8 +30,9 @@
     </nav>
     <div id="flights" class="tab-content">
         <div class="flight-heading-container">
-        <h1 id="flight-heading"></h1>
-    </div></div>
+            <h1 id="flight-heading"></h1>
+        </div>
+    </div>
     <div id="passengers" class="tab-content">
         <div class="passenger-warning">
             <h3>Passenger details</h3>
@@ -46,7 +47,7 @@
                 </div>
                 <div class="row seat-label">
                     <div class="seat large"></div>
-                    <div id="large-label">Large seats</div>
+                    <div id="large-label"><p>Large seats</p><p>+A$35</p></div>
                     <div class="seat available"></div>
                     <div id="avail-label">Available</div>
                     <div class="seat confirmed"></div>
@@ -77,8 +78,8 @@
 
                     <div class="aisle"></div>
             
+                    <div class="seat large">2E</div>
                     <div class="seat large">2F</div>
-                    <div class="seat large">2G</div>
                 </div>
                 <div class="row">
                     <div class="seat">3A</div>
@@ -391,13 +392,43 @@
     </div>
     <div id="payment" class="tab-content">
         <div class="payment-main-container">
-            <div class="final-bill-container">
+            <div class="flight-and-passenger-container">
+                <div class="flight-and-bill-container">
+                    <div class="flight-heading">
+                        <h1>
+                           Flight Info
+                        </h1>
+                    </div>
+                    <div class="invoice-container">
+                        <h1>
+                            Invoice
+                         </h1>
+                        <div class="invoice-details-container">
+                        </div>
+                    </div>   
+                </div>
+                
 
-            </div>
+                <div class="passenger-and-payment-container">
+                    <div class="complete-passenger-container">
+                    </div>
+                    <div class="payment-form">
+                        <label for="cardNumber">Card Number:</label>
+                        <input type="text" id="cardNumber" name="cardNumber" required>
+                    
+                        <label for="cardName">Card Name:</label>
+                        <input type="text" id="cardName" name="cardName" required>
+                    
+                        <label for="cvv">CVV:</label>
+                        <input type="password" id="cvv" name="cvv" required>
+                    
+                        <button id="payNowBtn">Pay Now</button>
+                        
+                </div>  
 
-            <div class="payment-form-container">
-                <div class="payment-main-container"></div>
+                
             </div>
+            
         </div>
     </div>
 </body>
