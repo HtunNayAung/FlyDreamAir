@@ -30,6 +30,12 @@ const menuItems = [
 
 const largeSeats = ['1A', '1B', '1C', '1D', '1E', '1F', '2A', '2B', '2C', '2D', '2E', '2F'];
 const largeSeatFare = 35;
+
+const footerText = ` <footer class="footer">
+                        <div class="footer-top">
+                            <p>FlyDream Air &copy; 2024. All rights reserved.</p>
+                        </div>
+                    </footer>`;
   
 
 
@@ -153,7 +159,8 @@ $(document).ready(function() {
                 $('#flights').append(`<div class="proceed-btn-container">
                                     <button class="btn" id="proceedBtn">PROCEED</button>
                                  </div>`)
-    
+                
+                $('#flights').append(footerText);
                 $('.selectButtons').click(function() {
                     $('.flight-details-container').removeClass('selected');
                     var container = $(this).closest('.flight-details-container');
@@ -263,6 +270,11 @@ $(document).ready(function() {
                                 <button class="btn" id="nextBtn">NEXT: SEAT SELECTION</button>
                                 <button class="btn" id="toPaymentBtn">STRAIGHT TO PAYMENT</button>
                             </div>`);
+    $('#passengers').append(footerText);
+
+    $('#seats').append(footerText);
+    $('#addons').append(footerText);
+    $('#payment').append(footerText);
 
     $(document).on('click', '.dropbtn', function() {
         populateDropdown(this);
@@ -416,11 +428,58 @@ $(document).ready(function() {
                         <p><span>A$ ${totalPrice}</span></p>
                     </div>`
                     $('.invoice-details-container').append(totalPriceLine);
+
+                    const payNowBtn = document.getElementById('payNowBtn');
+
+                    payNowBtn.addEventListener('click', function() {
+
+                        
+                        // Get form data
+                        const cardNumber = document.getElementById('cardNumber').value;
+                        const cardName = document.getElementById('cardName').value;
+                        const cvv = document.getElementById('cvv').value;
+                        const paidTime = new Date().toISOString(); // Get current time
+
+
+                        [[{"ticketID":"AW-750788-240620","personal":{"title":"Mr","firstName":"Q","lastName":"R","nationality":"Honduran","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"hna732@uowmail.edu.au","phoneNumber":"0424495582"},"seat":"3I","addOns":["Fried Chicken"],"flight":{"origin":"Sydney","destination":"Melbourne","departure":"May 31, 2024, 11:50 AM","arrival":"May 31, 2024, 1:23 PM","price":"70 AUD","flightNo":"FD002"},"paymentData":{"cardNumber":"1231232131232312","cardName":"A T","paidTime":"2024-05-09T02:46:21.506Z"}}],[{"ticketID":"AW-750788-240620","personal":{"title":"Mr","firstName":"Q","lastName":"R","nationality":"Honduran","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"hna732@uowmail.edu.au","phoneNumber":"0424495582"},"seat":"3I","addOns":["Fried Chicken"],"flight":{"origin":"Sydney","destination":"Melbourne","departure":"May 31, 2024, 11:50 AM","arrival":"May 31, 2024, 1:23 PM","price":"70 AUD","flightNo":"FD002"},"paymentData":{"cardNumber":"1231232131232312","cardName":"A T","paidTime":"2024-05-09T02:46:22.512Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:36.853Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:44.083Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:44.083Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:49.095Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:49.095Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:49.837Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:49.837Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:50.017Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:50.017Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.509Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.510Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.708Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.708Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.884Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.884Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.067Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.067Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.243Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.244Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.437Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.438Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.612Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.612Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.785Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.785Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.978Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.979Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:07.165Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:07.165Z"}}],[{"ticketID":"HN-596448-240308","personal":{"title":"Mr","firstName":"A","lastName":"B","nationality":"Australian","passport":"AU123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Coconut Rice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"123123213123","cardName":"dsfds","paidTime":"2024-05-09T02:51:11.104Z"}}],[{"ticketID":"CA-248832-240917","personal":{"title":"Mr","firstName":"A","lastName":"Ggggg","nationality":"Albanian","passport":"CND123331","issuePlace":"Australia","expiry":"123123"},"contact":{"email":"hna732@uowmail.edu.au","phoneNumber":"21321323213"},"addOns":["Noodle Soup"],"flight":{"origin":"Sydney","destination":"Melbourne","departure":"May 30, 2024, 5:45 PM","arrival":"May 30, 2024, 7:18 PM","price":"70 AUD","flightNo":"FD003"},"paymentData":{"cardNumber":"21321321321312321","cardName":"A T","paidTime":"2024-05-09T03:32:38.068Z"}}],[{"ticketID":"RC-579652-240713","personal":{"title":"Mr","firstName":"A","lastName":"B","nationality":"Albanian","passport":"MF999121","issuePlace":"Australia","expiry":"12323"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"3I","addOns":["Orange Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"213213213213123","cardName":"213","paidTime":"2024-05-09T03:33:57.830Z"}}],[{"ticketID":"TH-695706-240206","personal":{"title":"Mr","firstName":"A","lastName":"Ws","nationality":"Bhutanese","passport":"AU123123","issuePlace":"Australia","expiry":"09/27"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Melbourne","departure":"May 31, 2024, 5:45 PM","arrival":"May 31, 2024, 7:18 PM","price":"70 AUD","flightNo":"FD003"},"paymentData":{"cardNumber":"123213213123213","cardName":"abcd","paidTime":"2024-05-09T03:40:46.085Z"}}],[{"ticketID":"CW-930918-241119","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Bhutanese","passport":"AU123123","issuePlace":"Australia","expiry":"12/34"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Salmon Sushi"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"1234134123424","cardName":"abcd","paidTime":"2024-05-09T03:42:41.078Z"}}],[{"ticketID":"JS-542472-240503","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Select Nationality","passport":"AU123123","issuePlace":"Australia","expiry":"12/34"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Fried Chicken"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 3:30 AM","arrival":"May 31, 2024, 9:51 AM","price":"649 AUD","flightNo":"FD811"},"paymentData":{"cardNumber":"1234134123424","cardName":"abcd","paidTime":"2024-05-09T03:43:50.554Z"}}],[{"ticketID":"YY-412407-240518","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Select Nationality","passport":"AU123123","issuePlace":"Australia","expiry":"12/34"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"1234134123424","cardName":"abcd","paidTime":"2024-05-09T03:44:23.636Z"}}],[{"ticketID":"YO-343145-240203","personal":{"title":"Mr","firstName":"A","lastName":"B","nationality":"Armenian","passport":"AU123123","issuePlace":"Australia","expiry":"12/30"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Coconut Rice"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"1","cardName":"abcd","paidTime":"2024-05-09T03:46:21.186Z"}}],[{"ticketID":"DL-323089-240919","personal":{"title":"Mr","firstName":"A","lastName":"B","nationality":"Select Nationality","passport":"AU123123","issuePlace":"Australia","expiry":"12/30"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Fried Chicken"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"1","cardName":"abcd","paidTime":"2024-05-09T03:47:09.458Z"}}],[{"ticketID":"WB-820451-240110","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Antiguans","passport":"AU123123","issuePlace":"Australia","expiry":"12/20"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 10:30 AM","arrival":"May 31, 2024, 4:51 PM","price":"649 AUD","flightNo":"FD801"},"paymentData":{"cardNumber":"12312312312","cardName":"abcd","paidTime":"2024-05-09T03:57:04.665Z"}}],[{"ticketID":"CC-276590-240308","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Select Nationality","passport":"AU123123","issuePlace":"Australia","expiry":"12/20"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"3I","flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"12312312312","cardName":"abcd","paidTime":"2024-05-09T04:00:31.922Z"}}]]
+                        if (!cardNumber || !cardName || !cvv) {
+                            alert('Please fill in all fields.');
+                            return;
+                        } else{
+                            window.location.href = 'success.html';
+                            // Create data object
+                            const paymentData = {
+                                cardNumber: cardNumber,
+                                cardName: cardName,
+                                paidTime: paidTime
+                            };
+
+
+                            for (let i = 0; i < completePassengers.length; i++) {
+                                // Append the paymentData to the current object
+                                completePassengers[i].paymentData = paymentData;
+                            }
+                            saveData(completePassengers);
+
+
+                            for (let i = 0; i < completePassengers.length; i++) {
+                                const successContainer = document.querySelector('.success-container');
+                                if (successContainer) {
+                                    alert("Hiß")
+                                    successContainer.innerHTML = "Content updated after redirect";
+                                } else {
+                                    console.error("Could not find .success-container element");
+                                }
+                        
+                            }
+                        }
+
+                        
+                    })
                     
                 }
                 
             });
-
 
         });
     });
@@ -434,40 +493,12 @@ $(document).ready(function() {
 
     });
     
-
-    const payNowBtn = document.getElementById('payNowBtn');
-
-                    payNowBtn.addEventListener('click', function() {
-
-                        window.location.href = 'success.html';
-                        console.log("hi");
-                        // Get form data
-                        const cardNumber = document.getElementById('cardNumber').value;
-                        const cardName = document.getElementById('cardName').value;
-                        const cvv = document.getElementById('cvv').value;
-                        const paidTime = new Date().toISOString(); // Get current time
-
-                        if (!cardNumber || !cardName || !cvv) {
-                            alert('Please fill in all fields.');
-                            return;
-                        }
-
-                        // Create data object
-                        const paymentData = {
-                            cardNumber: cardNumber,
-                            cardName: cardName,
-                            paidTime: paidTime
-                        };
-
-                        console.log(completePassengers)
-
-
-                        for (let i = 0; i < completePassengers.length; i++) {
-                            // Append the paymentData to the current object
-                            completePassengers[i].paymentData = paymentData;
-                        }
-                        saveData(completePassengers);
-                    })
+// $('.success-container').append(
+                                //     ` <div class="success-heading">
+                                //          <p>${completePassengers[i]['personal']['title']+ ' ' + completePassengers[i]['personal']['firstName'] + ' ' + completePassengers[i]['personal']['lastName'] + ' ' + completePassengers[i]['ticketID']}</p>
+                                //      </div>`
+                                //     )
+    
    
 
 });
@@ -777,9 +808,26 @@ function getPriceByName(itemName) {
 }
 
 function saveData(data) {
-    const jsonData = JSON.stringify(data);
+    // Retrieve existing bookingsData from localStorage
+    let existingData = localStorage.getItem('bookingsData');
+    let bookingsData;
+    console.log("hi");
+    if (existingData) {
+        // If existing data exists, parse it from JSON
+        bookingsData = JSON.parse(existingData);
+        
+        // Append the new data to existing data
+        bookingsData.push(data);
+    } else {
+        // If no existing data, create a new array with the new data
+        bookingsData = [data];
+    }
 
-    // Save data to localStorage
+    // Convert the updated data to JSON
+    const jsonData = JSON.stringify(bookingsData);
+
+    // Save the updated data back to localStorage
     localStorage.setItem('bookingsData', jsonData);
 }
+
 
