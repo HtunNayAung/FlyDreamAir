@@ -493,14 +493,6 @@ $(document).ready(function() {
 
     });
     
-// $('.success-container').append(
-                                //     ` <div class="success-heading">
-                                //          <p>${completePassengers[i]['personal']['title']+ ' ' + completePassengers[i]['personal']['firstName'] + ' ' + completePassengers[i]['personal']['lastName'] + ' ' + completePassengers[i]['ticketID']}</p>
-                                //      </div>`
-                                //     )
-    
-   
-
 });
 
 function addOnService(){
@@ -811,7 +803,6 @@ function saveData(data) {
     // Retrieve existing bookingsData from localStorage
     let existingData = localStorage.getItem('bookingsData');
     let bookingsData;
-    console.log("hi");
     if (existingData) {
         // If existing data exists, parse it from JSON
         bookingsData = JSON.parse(existingData);
