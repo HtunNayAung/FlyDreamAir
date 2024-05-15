@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="booking.js" defer></script>
+    <script src="index.js" defer></script>
     <link rel="stylesheet" href="booking.css">
     <title>FlyDream Airline</title>
+</head>
 </head>
 <body>
     <nav class="main-nav">
@@ -21,25 +22,8 @@
             <img id="logoImg" src="images/logo.png" alt="FlyDream Air Logo">
         </div>
     </nav>
-    <nav class="booking-nav">
-        <span class="tab active" data-tab="flights">FLIGHTS</span>
-        <span class="tab" data-tab="passengers">PASSENGERS</span>
-        <span class="tab" data-tab="seats">SEATS</span>
-        <span class="tab" data-tab="addons">ADD-ONS</span>
-        <span class="tab" data-tab="payment">PAYMENT</span>
-    </nav>
-    <div id="flights" class="tab-content">
-        <div class="flight-heading-container">
-            <h1 id="flight-heading"></h1>
-        </div>
-    </div>
-    <div id="passengers" class="tab-content">
-        <div class="passenger-warning">
-            <h3>Passenger details</h3>
-            <p>Passengers are required to possess a valid passport along with any necessary visa(s) for entry into the destination. Please note that FlyDream Airlines cannot assume responsibility if a passenger is denied entry and/or deported by local authorities.</p>
-        </div>
-    </div>
-    <div id="seats" class="tab-content">
+
+    <div id="seats">
         <div class="seat-main-container">
             <div class="airplane">
                 <div>
@@ -373,72 +357,17 @@
                     <div class="seat">20H</div>
                     <div class="seat">20I</div>
                 </div>
-
-
                 
             </div>
 
             <div class="seat-selection">
-            </div>
+        
+            </div> 
+
         </div>
         
     </div>
-    <div id="addons" class="tab-content">
-        <div class="addons-main-container">
-            <div class="menu-container">
-                <div id="menu-title-container"><h3>Menus</h3></div>
-               
-                <div class="menus"></div>
-            </div>
-            <div class="order-container"></div>
-        </div>
-    </div>
-    <div id="payment" class="tab-content">
-        <div class="payment-main-container">
-            <div class="flight-and-passenger-container">
-                <div class="flight-and-bill-container">
-                    <div class="flight-heading">
-                        <h1>
-                           Flight Info
-                        </h1>
-                    </div>
-                    <div class="invoice-container">
-                        <h1>
-                            Invoice
-                         </h1>
-                        <div class="invoice-details-container">
-                        </div>
-                    </div>   
-                </div>
-                
-
-                <div class="passenger-and-payment-container">
-                    <div class="complete-passenger-container">
-                    </div>
-                    <div class="payment-form">
-                        <label for="cardNumber">Card Number:</label>
-                        <input type="text" id="cardNumber" name="cardNumber" required>
-                    
-                        <label for="cardName">Card Name:</label>
-                        <input type="text" id="cardName" name="cardName" required>
-                    
-                        <label for="cvv">CVV:</label>
-                        <input type="password" id="cvv" name="cvv" required>
-                    
-                        <button id="payNowBtn">Pay Now</button>
-                        
-                </div>  
-
-                
-            </div>
-            
-        </div>
-
-        
-    </div>
-
-   
 </body>
 </html>
 
-
+    

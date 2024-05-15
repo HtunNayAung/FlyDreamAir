@@ -56,6 +56,10 @@ $(document).ready(function() {
         history.pushState(null, null, `#${tabName}`);
     });
 
+    if(window.location.hash === '#flights'){
+        $('#flights').addClass("active");
+    }
+
     $(window).on("popstate", function(event) {
         const tabName = location.hash.slice(1);
         showTab(tabName);
@@ -281,207 +285,201 @@ $(document).ready(function() {
     });
 
     $('#nextBtn').click(function(){
-        savePassengerData();
-        window.location.hash = "seats";
-        tabs.removeClass("active");
-        $(".booking-nav span[data-tab='seats']").addClass("active");
-        // location.reload();
-        confirmedSeats = selectSeat();
-        $('#toPaymentBtnSeat').click(function(){
-            sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
-                obj[key] = value;
-                return obj;
-            }, {})));
-            window.location.hash = "payment";
+        let needData = savePassengerData();
+        if(!needData){
+            window.location.hash = "seats";
             tabs.removeClass("active");
-            $(".booking-nav span[data-tab='payment']").addClass("active");
-            
-        });
-    
-        $('#nextAddOnsBtn').click(function(){
-            sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
-                obj[key] = value;
-                return obj;
-            }, {})));
-            window.location.hash = "addons";
-            tabs.removeClass("active");
-            $(".booking-nav span[data-tab='addons']").addClass("active");
-            addOnService();
-            $('#toPaymentBtnAddon').click(function(){
-                let orderedItems = {};
-        
-                // Iterate over each passenger container
-                $('.each-passenger-order').each(function() {
-                    // Get the passenger's full name
-                    let passengerName = $(this).attr('data-passenger');
-                    // Get the selected menu items for this passenger
-                    let selectedItems = [];
-                    $(this).find('.menu-dropdown').each(function() {
-                        let selectedItem = $(this).val();
-                        // Add the selected item to the array, if a valid selection is made
-                        if (selectedItem !== 'Select item') {
-                            selectedItems.push(selectedItem);
-                        }
-                    });
-                    // Add the array of selected items to the orderedItems object
-                    if (selectedItems.length > 0) {
-                        orderedItems[passengerName] = selectedItems;
-                    }
-                });
-        
-                // Convert the orderedItems object to a JSON string
-                let orderedItemsJSON = JSON.stringify(orderedItems);
-        
-                // Store the JSON string in session storage
-                sessionStorage.setItem('orderedItems', orderedItemsJSON);
+            $(".booking-nav span[data-tab='seats']").addClass("active");
+            confirmedSeats = selectSeat();
+            $('#toPaymentBtnSeat').click(function(){
+                sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
+                    obj[key] = value;
+                    return obj;
+                }, {})));
                 window.location.hash = "payment";
                 tabs.removeClass("active");
                 $(".booking-nav span[data-tab='payment']").addClass("active");
-
-
-                if(window.location.hash === '#payment'){
-                    let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
-                    let orders =  JSON.parse(sessionStorage.getItem('orderedItems'));  
-                    let passengersData = JSON.parse(sessionStorage.getItem('passengerData'));
-                    let seats = JSON.parse(sessionStorage.getItem('seatConfirmed'));
-                    let completePassengers = [];
-                    
-                    for(let i=0; i<passengersData.length; i++){
-                        let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
-                        let passengerObj = {
-                            ticketID : generateOrderNumber(),
-                            personal : passengersData[i].personal,
-                            contact : passengersData[i].contact,
-                            seat : seats[fullName],
-                            addOns : orders[fullName],
-                            flight : flight
-                        }
-                        completePassengers.push(passengerObj);
-                    }
-            
-                    sessionStorage.setItem('completeData',JSON.stringify(completePassengers));
-
-                    let flightHeading = `<p id="first-heading">${flight.origin} <i class="ri-flight-takeoff-line"></i>  ${flight.destination}</p> <p>Departure: ${flight.departure}</p><p> Arrival: ${flight.arrival}</p> <p>Flight Number: ${flight.flightNo}</p>`;
-                    $('.flight-heading').append(flightHeading);
-
-                    for(let i=0; i<passengersData.length; i++){
-                        let completePassengerText = '';
-                        let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
-                        completePassengerText += `<div class="complete-each-passenger">
-                        <h1><i class="ri-user-line"></i></span> Passenger ${i+1}</h1>
-                        <div class="name-and-seat">
-                            <div>Full Name: ${fullName}</div>
-                            <div>Seat Number: ${seats[fullName]}</div>
-                        </div>
-                        
-                        <p>Contact email: ${passengersData[i]['contact'].email }</p>`;
-                        let addOnsText = '';
-                        if(!orders.hasOwnProperty(fullName)){
-                            addOnsText += 'None';
-                        } else{
-                            for(let j=0; j<orders[fullName].length; j++){
-                                addOnsText += orders[fullName][j] + ', ';
-                            }
-
-                            addOnsText = addOnsText.slice(0,-2);
-                        }
-
-                        completePassengerText += `<p>Add-on service: ${addOnsText}</p>
-                            </div>`;
-
-                        $('.complete-passenger-container').append(completePassengerText);
-                    }
-
-                    let totalPrice= 0;
-
-                    for(let i=0; i<passengersData.length; i++){
-                        let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
-                        let basePrice = parseInt(flight.price.split(" ")[0]);
-                        let billLine = `<div class="invoice-details">
-                                <p>Base Fare ${seats[fullName]}</p>
-                                <p><span>A$ ${basePrice}</span></p>
-                            </div>`;
-                        totalPrice += basePrice;
-                        if(largeSeats.includes(seats[fullName])){
-                            billLine += `<div class="invoice-details">
-                                <p>Large Seat Fare ${seats[fullName]}</p>
-                                <p><span>A$ ${largeSeatFare}</span></p>
-                            </div>`
-                            totalPrice += largeSeatFare;
-                        }
-                        if(orders.hasOwnProperty(fullName)){
-                            for(let j=0;j<orders[fullName].length;j++){
-                                billLine += `<div class="invoice-details">
-                                    <p>Add-on Fare: ${orders[fullName][j]}</p>
-                                    <p><span>A$ ${getPriceByName(orders[fullName][j])}</span></p>
-                                </div>`
-                                totalPrice += getPriceByName(orders[fullName][j]);
-                            }
-                        }
-
-
-                        $('.invoice-details-container').append(billLine);
-                    }
-
-                    let totalPriceLine = `<div class="invoice-details id="totalAmount">
-                        <p>Total Amount</p>
-                        <p><span>A$ ${totalPrice}</span></p>
-                    </div>`
-                    $('.invoice-details-container').append(totalPriceLine);
-
-                    const payNowBtn = document.getElementById('payNowBtn');
-
-                    payNowBtn.addEventListener('click', function() {
-
-                        
-                        // Get form data
-                        const cardNumber = document.getElementById('cardNumber').value;
-                        const cardName = document.getElementById('cardName').value;
-                        const cvv = document.getElementById('cvv').value;
-                        const paidTime = new Date().toISOString(); // Get current time
-
-
-                        [[{"ticketID":"AW-750788-240620","personal":{"title":"Mr","firstName":"Q","lastName":"R","nationality":"Honduran","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"hna732@uowmail.edu.au","phoneNumber":"0424495582"},"seat":"3I","addOns":["Fried Chicken"],"flight":{"origin":"Sydney","destination":"Melbourne","departure":"May 31, 2024, 11:50 AM","arrival":"May 31, 2024, 1:23 PM","price":"70 AUD","flightNo":"FD002"},"paymentData":{"cardNumber":"1231232131232312","cardName":"A T","paidTime":"2024-05-09T02:46:21.506Z"}}],[{"ticketID":"AW-750788-240620","personal":{"title":"Mr","firstName":"Q","lastName":"R","nationality":"Honduran","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"hna732@uowmail.edu.au","phoneNumber":"0424495582"},"seat":"3I","addOns":["Fried Chicken"],"flight":{"origin":"Sydney","destination":"Melbourne","departure":"May 31, 2024, 11:50 AM","arrival":"May 31, 2024, 1:23 PM","price":"70 AUD","flightNo":"FD002"},"paymentData":{"cardNumber":"1231232131232312","cardName":"A T","paidTime":"2024-05-09T02:46:22.512Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:36.853Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:44.083Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:44.083Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:49.095Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:49.095Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:49.837Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:49.837Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:50.017Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:47:50.017Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.509Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.510Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.708Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.708Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.884Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:05.884Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.067Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.067Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.243Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.244Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.437Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.438Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.612Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.612Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.785Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.785Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.978Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:06.979Z"}}],[{"ticketID":"KM-759283-241223","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:07.165Z"}}],[{"ticketID":"VS-152342-240315","personal":{"title":"Mr","firstName":"A","lastName":"Bn","nationality":"Belizean","passport":"DN123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"13213123312312","cardName":"A T","paidTime":"2024-05-09T02:48:07.165Z"}}],[{"ticketID":"HN-596448-240308","personal":{"title":"Mr","firstName":"A","lastName":"B","nationality":"Australian","passport":"AU123123","issuePlace":"Australia","expiry":"09/29"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Coconut Rice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"123123213123","cardName":"dsfds","paidTime":"2024-05-09T02:51:11.104Z"}}],[{"ticketID":"CA-248832-240917","personal":{"title":"Mr","firstName":"A","lastName":"Ggggg","nationality":"Albanian","passport":"CND123331","issuePlace":"Australia","expiry":"123123"},"contact":{"email":"hna732@uowmail.edu.au","phoneNumber":"21321323213"},"addOns":["Noodle Soup"],"flight":{"origin":"Sydney","destination":"Melbourne","departure":"May 30, 2024, 5:45 PM","arrival":"May 30, 2024, 7:18 PM","price":"70 AUD","flightNo":"FD003"},"paymentData":{"cardNumber":"21321321321312321","cardName":"A T","paidTime":"2024-05-09T03:32:38.068Z"}}],[{"ticketID":"RC-579652-240713","personal":{"title":"Mr","firstName":"A","lastName":"B","nationality":"Albanian","passport":"MF999121","issuePlace":"Australia","expiry":"12323"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"3I","addOns":["Orange Juice"],"flight":{"origin":"Sydney","destination":"Yangon","departure":"May 31, 2024, 5:00 PM","arrival":"Jun 01, 2024, 5:30 AM","price":"949 AUD","flightNo":"FD221"},"paymentData":{"cardNumber":"213213213213123","cardName":"213","paidTime":"2024-05-09T03:33:57.830Z"}}],[{"ticketID":"TH-695706-240206","personal":{"title":"Mr","firstName":"A","lastName":"Ws","nationality":"Bhutanese","passport":"AU123123","issuePlace":"Australia","expiry":"09/27"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Melbourne","departure":"May 31, 2024, 5:45 PM","arrival":"May 31, 2024, 7:18 PM","price":"70 AUD","flightNo":"FD003"},"paymentData":{"cardNumber":"123213213123213","cardName":"abcd","paidTime":"2024-05-09T03:40:46.085Z"}}],[{"ticketID":"CW-930918-241119","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Bhutanese","passport":"AU123123","issuePlace":"Australia","expiry":"12/34"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Salmon Sushi"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"1234134123424","cardName":"abcd","paidTime":"2024-05-09T03:42:41.078Z"}}],[{"ticketID":"JS-542472-240503","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Select Nationality","passport":"AU123123","issuePlace":"Australia","expiry":"12/34"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Fried Chicken"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 3:30 AM","arrival":"May 31, 2024, 9:51 AM","price":"649 AUD","flightNo":"FD811"},"paymentData":{"cardNumber":"1234134123424","cardName":"abcd","paidTime":"2024-05-09T03:43:50.554Z"}}],[{"ticketID":"YY-412407-240518","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Select Nationality","passport":"AU123123","issuePlace":"Australia","expiry":"12/34"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Lemon Juice"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"1234134123424","cardName":"abcd","paidTime":"2024-05-09T03:44:23.636Z"}}],[{"ticketID":"YO-343145-240203","personal":{"title":"Mr","firstName":"A","lastName":"B","nationality":"Armenian","passport":"AU123123","issuePlace":"Australia","expiry":"12/30"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Coconut Rice"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"1","cardName":"abcd","paidTime":"2024-05-09T03:46:21.186Z"}}],[{"ticketID":"DL-323089-240919","personal":{"title":"Mr","firstName":"A","lastName":"B","nationality":"Select Nationality","passport":"AU123123","issuePlace":"Australia","expiry":"12/30"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","addOns":["Fried Chicken"],"flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"1","cardName":"abcd","paidTime":"2024-05-09T03:47:09.458Z"}}],[{"ticketID":"WB-820451-240110","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Antiguans","passport":"AU123123","issuePlace":"Australia","expiry":"12/20"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"1F","flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 10:30 AM","arrival":"May 31, 2024, 4:51 PM","price":"649 AUD","flightNo":"FD801"},"paymentData":{"cardNumber":"12312312312","cardName":"abcd","paidTime":"2024-05-09T03:57:04.665Z"}}],[{"ticketID":"CC-276590-240308","personal":{"title":"Mr","firstName":"Ab","lastName":"Cdws","nationality":"Select Nationality","passport":"AU123123","issuePlace":"Australia","expiry":"12/20"},"contact":{"email":"htunnayaung113@gmail.com","phoneNumber":"0424495582"},"seat":"3I","flight":{"origin":"Sydney","destination":"Bali","departure":"May 31, 2024, 9:30 AM","arrival":"May 31, 2024, 3:51 PM","price":"649 AUD","flightNo":"FD821"},"paymentData":{"cardNumber":"12312312312","cardName":"abcd","paidTime":"2024-05-09T04:00:31.922Z"}}]]
-                        if (!cardNumber || !cardName || !cvv) {
-                            alert('Please fill in all fields.');
-                            return;
-                        } else{
-                            window.location.href = 'success.html';
-                            // Create data object
-                            const paymentData = {
-                                cardNumber: cardNumber,
-                                cardName: cardName,
-                                paidTime: paidTime
-                            };
-
-
-                            for (let i = 0; i < completePassengers.length; i++) {
-                                // Append the paymentData to the current object
-                                completePassengers[i].paymentData = paymentData;
-                            }
-                            saveData(completePassengers);
-
-
-                            for (let i = 0; i < completePassengers.length; i++) {
-                                const successContainer = document.querySelector('.success-container');
-                                if (successContainer) {
-                                    alert("Hiß")
-                                    successContainer.innerHTML = "Content updated after redirect";
-                                } else {
-                                    console.error("Could not find .success-container element");
-                                }
-                        
-                            }
-                        }
-
-                        
-                    })
-                    
-                }
                 
             });
+        
+            $('#nextAddOnsBtn').click(function(){
+                sessionStorage.setItem('seatConfirmed',JSON.stringify(Array.from(confirmedSeats).reduce((obj, [key, value]) => {
+                    obj[key] = value;
+                    return obj;
+                }, {})));
+                window.location.hash = "addons";
+                tabs.removeClass("active");
+                $(".booking-nav span[data-tab='addons']").addClass("active");
+                addOnService();
+                $('#toPaymentBtnAddon').click(function(){
+                    let orderedItems = {};
+            
+                    // Iterate over each passenger container
+                    $('.each-passenger-order').each(function() {
+                        let passengerName = $(this).attr('data-passenger');
+                        let selectedItems = [];
+                        $(this).find('.menu-dropdown').each(function() {
+                            let selectedItem = $(this).val();
+                            if (selectedItem !== 'Select item') {
+                                selectedItems.push(selectedItem);
+                            }
+                        });
+                        // Add the array of selected items to the orderedItems object
+                        if (selectedItems.length > 0) {
+                            orderedItems[passengerName] = selectedItems;
+                        }
+                    });
+            
+                    // Convert the orderedItems object to a JSON string
+                    let orderedItemsJSON = JSON.stringify(orderedItems);
+                    sessionStorage.setItem('orderedItems', orderedItemsJSON);
+                    window.location.hash = "payment";
+                    tabs.removeClass("active");
+                    $(".booking-nav span[data-tab='payment']").addClass("active");
 
-        });
+
+                    if(window.location.hash === '#payment'){
+                        let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
+                        let orders =  JSON.parse(sessionStorage.getItem('orderedItems'));  
+                        let passengersData = JSON.parse(sessionStorage.getItem('passengerData'));
+                        let seats = JSON.parse(sessionStorage.getItem('seatConfirmed'));
+                        let completePassengers = [];
+                        
+                        for(let i=0; i<passengersData.length; i++){
+                            let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+                            let passengerObj = {
+                                ticketID : generateOrderNumber(),
+                                personal : passengersData[i].personal,
+                                contact : passengersData[i].contact,
+                                seat : seats[fullName],
+                                addOns : orders[fullName],
+                                flight : flight
+                            }
+                            completePassengers.push(passengerObj);
+                        }
+                
+                        sessionStorage.setItem('completeData',JSON.stringify(completePassengers));
+
+                        let flightHeading = `<p id="first-heading">${flight.origin} <i class="ri-flight-takeoff-line"></i>  ${flight.destination}</p> <p>Departure: ${flight.departure}</p><p> Arrival: ${flight.arrival}</p> <p>Flight Number: ${flight.flightNo}</p>`;
+                        $('.flight-heading').append(flightHeading);
+
+                        for(let i=0; i<passengersData.length; i++){
+                            let completePassengerText = '';
+                            let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+                            completePassengerText += `<div class="complete-each-passenger">
+                            <h1><i class="ri-user-line"></i></span> Passenger ${i+1}</h1>
+                            <div class="name-and-seat">
+                                <div>Full Name: ${fullName}</div>
+                                <div>Seat Number: ${seats[fullName]}</div>
+                            </div>
+                            
+                            <p>Contact email: ${passengersData[i]['contact'].email }</p>`;
+                            let addOnsText = '';
+                            if(!orders.hasOwnProperty(fullName)){
+                                addOnsText += 'None';
+                            } else{
+                                for(let j=0; j<orders[fullName].length; j++){
+                                    addOnsText += orders[fullName][j] + ', ';
+                                }
+
+                                addOnsText = addOnsText.slice(0,-2);
+                            }
+
+                            completePassengerText += `<p>Add-on service: ${addOnsText}</p>
+                                </div>`;
+
+                            $('.complete-passenger-container').append(completePassengerText);
+                        }
+
+                        let totalPrice= 0;
+
+                        for(let i=0; i<passengersData.length; i++){
+                            let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+                            let basePrice = parseInt(flight.price.split(" ")[0]);
+                            let billLine = `<div class="invoice-details">
+                                    <p>Base Fare ${seats[fullName]}</p>
+                                    <p><span>A$ ${basePrice}</span></p>
+                                </div>`;
+                            totalPrice += basePrice;
+                            if(largeSeats.includes(seats[fullName])){
+                                billLine += `<div class="invoice-details">
+                                    <p>Large Seat Fare ${seats[fullName]}</p>
+                                    <p><span>A$ ${largeSeatFare}</span></p>
+                                </div>`
+                                totalPrice += largeSeatFare;
+                            }
+                            if(orders.hasOwnProperty(fullName)){
+                                for(let j=0;j<orders[fullName].length;j++){
+                                    billLine += `<div class="invoice-details">
+                                        <p>Add-on Fare: ${orders[fullName][j]}</p>
+                                        <p><span>A$ ${getPriceByName(orders[fullName][j])}</span></p>
+                                    </div>`
+                                    totalPrice += getPriceByName(orders[fullName][j]);
+                                }
+                            }
+
+
+                            $('.invoice-details-container').append(billLine);
+                        }
+
+                        let totalPriceLine = `<div class="invoice-details id="totalAmount">
+                            <p>Total Amount</p>
+                            <p><span>A$ ${totalPrice}</span></p>
+                        </div>`
+                        $('.invoice-details-container').append(totalPriceLine);
+
+                        const payNowBtn = document.getElementById('payNowBtn');
+
+                        payNowBtn.addEventListener('click', function() {
+
+                            
+                            // Get form data
+                            const cardNumber = document.getElementById('cardNumber').value;
+                            const cardName = document.getElementById('cardName').value;
+                            const cvv = document.getElementById('cvv').value;
+                            const paidTime = new Date().toISOString(); // Get current time
+
+                            if (!cardNumber || !cardName || !cvv) {
+                                alert('Please fill in all fields.');
+                                return;
+                            } else{
+                                window.location.href = 'success.html';
+                                // Create data object
+                                const paymentData = {
+                                    cardNumber: cardNumber,
+                                    cardName: cardName,
+                                    paidTime: paidTime
+                                };
+
+
+                                for (let i = 0; i < completePassengers.length; i++) {
+                                    // Append the paymentData to the current object
+                                    completePassengers[i].paymentData = paymentData;
+                                }
+                                saveData(completePassengers);
+
+
+                                for (let i = 0; i < completePassengers.length; i++) {
+                                    const successContainer = document.querySelector('.success-container');
+                                    if (successContainer) {
+                                        alert("Hiß")
+                                        successContainer.innerHTML = "Content updated after redirect";
+                                    } else {
+                                        console.error("Could not find .success-container element");
+                                    }
+                            
+                                }
+                            }
+
+                            
+                        })
+                        
+                    }
+                    
+                });
+
+            });
+        }
     });
 
     $('#toPaymentBtn').click(function(){
@@ -512,7 +510,7 @@ function addOnService(){
     for(let i=0; i<passengersData.length; i++){
         let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
         flightHeading += `<div class="each-passenger-order" data-passenger="${fullName}">
-            <h5>${fullName} <span> Seat Number: ${seatConfirmed[fullName]} </span></h5>
+            <h5>${fullName} <span> Seat Number: ${seatConfirmed[fullName] || 'No Seat Selected'} </span></h5>
             <div class="orders"></div>
             <button class="orderBtn">Add Order</button>
         </div>`;
@@ -743,36 +741,78 @@ function selectNationality(clickedBtn, nationality) {
     $(clickedBtn).text(nationality); // Update the text of the clicked button
 }
 
+// function savePassengerData() {
+//     const passengerData = [];
+
+//     $('.passenger-data-container').each(function(index) {
+//         const personalDetails = $(this).find('.personal-details-row input');
+//         const contactDetails = $(this).find('.contact-details-row input');
+
+//         const nationality = $(this).find('.dropbtn').text();
+
+//         const passengerInfo = {
+//             personal: {
+//                 title: capitalize(personalDetails.eq(0).val()),
+//                 firstName: capitalize(personalDetails.eq(1).val()),
+//                 lastName: capitalize(personalDetails.eq(2).val()),
+//                 nationality: nationality,
+//                 passport: personalDetails.eq(3).val(),
+//                 issuePlace: personalDetails.eq(4).val(),
+//                 expiry: personalDetails.eq(5).val()
+//             },
+//             contact: {
+//                 email: contactDetails.eq(0).val(),
+//                 phoneNumber: contactDetails.eq(1).val()
+//             }
+//         };
+
+//         passengerData.push(passengerInfo);
+//     });
+
+//     sessionStorage.setItem('passengerData', JSON.stringify(passengerData));
+// }
+
 function savePassengerData() {
+    let needData = false;
     const passengerData = [];
 
     $('.passenger-data-container').each(function(index) {
         const personalDetails = $(this).find('.personal-details-row input');
         const contactDetails = $(this).find('.contact-details-row input');
-
         const nationality = $(this).find('.dropbtn').text();
 
-        const passengerInfo = {
-            personal: {
-                title: capitalize(personalDetails.eq(0).val()),
-                firstName: capitalize(personalDetails.eq(1).val()),
-                lastName: capitalize(personalDetails.eq(2).val()),
-                nationality: nationality,
-                passport: personalDetails.eq(3).val(),
-                issuePlace: personalDetails.eq(4).val(),
-                expiry: personalDetails.eq(5).val()
-            },
-            contact: {
-                email: contactDetails.eq(0).val(),
-                phoneNumber: contactDetails.eq(1).val()
-            }
-        };
-
-        passengerData.push(passengerInfo);
+        // Check if any required fields are empty
+        if (personalDetails.eq(0).val() === '' || personalDetails.eq(1).val() === '' || personalDetails.eq(2).val() === '' || personalDetails.eq(3).val() === '' || personalDetails.eq(4).val() === '' || personalDetails.eq(5).val() === '' || contactDetails.eq(0).val() === '' || contactDetails.eq(1).val() === '') {
+            alert('Please fill out all required fields.');
+            needData = true; // Exit the loop if any required fields are empty
+        } else{
+            const passengerInfo = {
+                personal: {
+                    title: capitalize(personalDetails.eq(0).val()),
+                    firstName: capitalize(personalDetails.eq(1).val()),
+                    lastName: capitalize(personalDetails.eq(2).val()),
+                    nationality: nationality,
+                    passport: personalDetails.eq(3).val(),
+                    issuePlace: personalDetails.eq(4).val(),
+                    expiry: personalDetails.eq(5).val()
+                },
+                contact: {
+                    email: contactDetails.eq(0).val(),
+                    phoneNumber: contactDetails.eq(1).val()
+                }
+            };
+    
+            passengerData.push(passengerInfo);
+        }
     });
 
-    sessionStorage.setItem('passengerData', JSON.stringify(passengerData));
+    // Only save passenger data if all required fields are filled out
+    if (passengerData.length === $('.passenger-data-container').length) {
+        sessionStorage.setItem('passengerData', JSON.stringify(passengerData));
+    }
+    return needData;
 }
+
 
 
 function generateOrderNumber() {

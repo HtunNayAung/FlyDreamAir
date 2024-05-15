@@ -21,7 +21,7 @@
             <img id="logoImg" src="images/logo.png" alt="">
         </div>
         <ul class="navLinks">
-            <li class="link"><a href="#">Home</a></li>
+            <li class="link"><a href="index.html">Home</a></li>
             <li class="link"><a href="#">About</a></li>
             <li class="link"><a href="#">Offers</a></li>
             <li class="link"><a href="#">Seats</a></li>
@@ -35,158 +35,172 @@
             <h1>Welcome Aboard!</h1>
             <h4>Experience world-class service and seamless travel with us. Your journey begins now!</h4>
         </div>
-        <section class="booking-container">
-            <div class="booking-nav">
-                <span>BOOK TRIP</span>
-                <span>MANAGE BOOKING</span>
-                <span>FLIGHT STATUS</span>
-            </div>
-            <div class="trip-selection">
-                <p>Hi, where you would like to go?  </p>
-                <span>
-                    <input class="trip-selection" type="radio" name="'trip-type" value="One Way"> <span>One Way</span>  
-                    <input class="trip-selection" type="radio" name="'trip-type" value="Round Trip"><span>Round Trip</span>  
-                </span>
-            </div>
-            <hr class="line">
-            <form>
-                <div class="form-row">
-                    <div class="form-group">
-                        <span><i class="ri-map-pin-line"></i></span>
-                        <div class="input-content">
-                            <div class="input-group">
-                                <input type="text" id="origin">
-                                <label for="">Location</label>
-                            </div>
-                            <p>Origin</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <span><i class="ri-map-pin-line"></i></span>
-                        <div class="input-content">
-                            <div class="input-group">
-                                <input type="text" id="destination">
-                                <label for="">Location</label>
-                            </div>
-                            <p>Destination</p>
-                        </div>
-                    </div>
-        
-                    <div class="form-group">
-                        <span><i class="ri-calendar-2-line"></i></span>
-                        <div class="input-content">
-                            <div class="input-group">
-                                <input type="text" id="departure">
-                                <label for="departure">Departure</label>
-                            </div>
-                            <p>Add date</p>
-                        </div>
-                    </div>
-        
-                    <div class="form-group return-group">
-                        <span><i class="ri-calendar-2-line"></i></span>
-                        <div class="input-content">
-                            <div class="input-group">
-                                <input type="text" id="return">
-                                <label for="return">Return</label>
-                            </div>
-                            <p>Add date</p>
-                        </div>
-                    </div>
-        
+        <div>
+            <section class="booking-container">
+                <div class="booking-nav">
+                    <span class="tab active" data-tab="book">BOOK TRIP</span>
+                    <span class="tab" data-tab="manage">MANAGE BOOKING</span>
+                    <span class="tab" data-tab="status">FLIGHT STATUS</span>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <select name="flight-class">
-                            <option value="business"><div>Economy Class</div></option>
-                            <option value="economy"><span>Business Class</span></option>
-                            <option value="first"><span>First Class</span></option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <span><i class="ri-user-line"></i></span>
-                        <div class="input-content">
-                            <div class="input-group">
-                                <input type="number" id="count" min="1" value="1">
-                                <label for="">Count</label>
+                <div class="trip-selection tab-content" id="book">
+                    <p>Hi, where you would like to go?  </p>
+                    <span>
+                        <input class="trip-selection" type="radio" name="'trip-type" value="One Way"> <span>One Way</span>  
+                        <input class="trip-selection" type="radio" name="'trip-type" value="Round Trip"><span>Round Trip</span>  
+                    </span>
+                </div>
+                <hr class="line tab-content" id="book">
+                <form class="tab-content" id="book">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <span><i class="ri-map-pin-line"></i></span>
+                            <div class="input-content">
+                                <div class="input-group">
+                                    <input type="text" id="origin">
+                                    <label for="">Location</label>
+                                </div>
+                                <p>Origin</p>
                             </div>
-                            <p>Passengers</p>
                         </div>
+                        <div class="form-group">
+                            <span><i class="ri-map-pin-line"></i></span>
+                            <div class="input-content">
+                                <div class="input-group">
+                                    <input type="text" id="destination">
+                                    <label for="">Location</label>
+                                </div>
+                                <p>Destination</p>
+                            </div>
+                        </div>
+            
+                        <div class="form-group">
+                            <span><i class="ri-calendar-2-line"></i></span>
+                            <div class="input-content">
+                                <div class="input-group">
+                                    <input type="text" id="departure">
+                                    <label for="departure">Departure</label>
+                                </div>
+                                <p>Add date</p>
+                            </div>
+                        </div>
+            
+                        <div class="form-group return-group">
+                            <span><i class="ri-calendar-2-line"></i></span>
+                            <div class="input-content">
+                                <div class="input-group">
+                                    <input type="text" id="return">
+                                    <label for="return">Return</label>
+                                </div>
+                                <p>Add date</p>
+                            </div>
+                        </div>
+            
                     </div>
-                    <div></div>
-                    <button class="btn" id="searchButton"><i class="ri-search-line"></i></button>
-                </div>
-            </form>
-        </section>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <select name="flight-class">
+                                <option value="business"><div>Economy Class</div></option>
+                                <option value="economy"><span>Business Class</span></option>
+                                <option value="first"><span>First Class</span></option>
+                            </select>
+                        </div>
 
-        <section class="trendings-container">
-            <h1>Trendings in <span>SYDNEY</span></h1>
+                        <div class="form-group">
+                            <span><i class="ri-user-line"></i></span>
+                            <div class="input-content">
+                                <div class="input-group">
+                                    <input type="number" id="count" min="1" value="1">
+                                    <label for="">Count</label>
+                                </div>
+                                <p>Passengers</p>
+                            </div>
+                        </div>
+                        <div></div>
+                        <button class="btn" id="searchButton"><i class="ri-search-line"></i></button>
+                    </div>
+                </form>
+                <form class="tab-content hidden" id="manage">
+                    <p id="warning">Important Notice: Seat changes for your upcoming flight must be completed prior to 48 hours before the scheduled departure time. Please note that seat changes may not be possible after this cutoff time. For further assistance, please contact our customer support team.</p>
+                    <input type="text" id="ticketID" placeholder="Enter your booking ticketID">
+                    <button id="ticketSearchBtn">Search booking</button>
+                    <div id="ticket-details-container"></div>
+                </form>
 
-            <section class="trendings-section">
-                <div class="trendings">
-                    <div class="trending-item">
-                        <img src="/images/bali.jpeg" alt="Bali">
-                        <div class="destination-info">
-                            <h3>Bali</h3>
-                            <p>Economy</p>
-                            <p>From <span>AUD 649</span></p>
-                        </div>
-                    </div>
-    
-                    <div class="trending-item">
-                        <img src="/images/singapore.jpeg" alt="Singapore">
-                        <div class="destination-info">
-                            <h3>Singapore</h3>
-                            <p>Economy</p>
-                            <p>From <span>AUD 894</span></p>
-                        </div>
-                    </div>
-    
-                    <div class="trending-item">
-                        <img src="/images/KL.jpeg" alt="Kuala Lumpur">
-                        <div class="destination-info">
-                            <h3>Kuala Lumpur</h3>
-                            <p>Economy</p>
-                            <p>From <span>AUD 889</span></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="trendings">
-                    <div class="trending-item">
-                        <img src="/images/yangon.jpeg" alt="Yangon">
-                        <div class="destination-info">
-                            <h3>Yangon</h3>
-                            <p>Economy</p>
-                            <p>From <span>AUD 949</span></p>
-                        </div>
-                    </div>
-    
-                    <div class="trending-item">
-                        <img src="images/HCM.jpeg" alt="Ho Chi Minh">
-                        <div class="destination-info">
-                            <h3>Ho Chi Minh</h3>
-                            <p>Economy</p>
-                            <p>From <span>AUD 905</span></p>
-                        </div>
-                    </div>
-    
-                    <div class="trending-item">
-                        <img src="images/osaka.jpeg" alt="Osaka">
-                        <div class="destination-info">
-                            <h3>Osaka</h3>
-                            <p>Economy</p>
-                            <p>From <span>AUD 999</span></p>
-                        </div>
-                    </div>
-                </div>
+                <form class="tab-content hidden" id="status">
+                    <p id="warning">Flight status offers customers timely updates regarding their flights, including details on delays, cancellations, departures, and current location. Access to this information requires providing the flight number.</p>
+                    <input type="text" id="ticketID" placeholder="Enter the flight number">
+                    <button id="statusSearchBtn">Search Flight Status</button>
+                </form>
             </section>
 
-            <button class="btn">
-                View more deals
-            </button>
-        </section>
+            <section class="trendings-container">
+                <h1>Trendings in <span>SYDNEY</span></h1>
+
+                <section class="trendings-section">
+                    <div class="trendings">
+                        <div class="trending-item">
+                            <img src="/images/bali.jpeg" alt="Bali">
+                            <div class="destination-info">
+                                <h3>Bali</h3>
+                                <p>Economy</p>
+                                <p>From <span>AUD 649</span></p>
+                            </div>
+                        </div>
+        
+                        <div class="trending-item">
+                            <img src="/images/singapore.jpeg" alt="Singapore">
+                            <div class="destination-info">
+                                <h3>Singapore</h3>
+                                <p>Economy</p>
+                                <p>From <span>AUD 894</span></p>
+                            </div>
+                        </div>
+        
+                        <div class="trending-item">
+                            <img src="/images/KL.jpeg" alt="Kuala Lumpur">
+                            <div class="destination-info">
+                                <h3>Kuala Lumpur</h3>
+                                <p>Economy</p>
+                                <p>From <span>AUD 889</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trendings">
+                        <div class="trending-item">
+                            <img src="/images/yangon.jpeg" alt="Yangon">
+                            <div class="destination-info">
+                                <h3>Yangon</h3>
+                                <p>Economy</p>
+                                <p>From <span>AUD 949</span></p>
+                            </div>
+                        </div>
+        
+                        <div class="trending-item">
+                            <img src="images/HCM.jpeg" alt="Ho Chi Minh">
+                            <div class="destination-info">
+                                <h3>Ho Chi Minh</h3>
+                                <p>Economy</p>
+                                <p>From <span>AUD 905</span></p>
+                            </div>
+                        </div>
+        
+                        <div class="trending-item">
+                            <img src="images/osaka.jpeg" alt="Osaka">
+                            <div class="destination-info">
+                                <h3>Osaka</h3>
+                                <p>Economy</p>
+                                <p>From <span>AUD 999</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <button class="btn">
+                    View more deals
+                </button>
+            </section>
+        </div>
     </div>
 
     <footer class="footer">
