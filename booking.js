@@ -597,84 +597,106 @@ function showConfirmationBox(finished, selectedSeats, confirmedSeats, passenger,
 
 function selectSeat(){
     if(window.location.hash === '#seats'){
-            let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
-            let passengersData = JSON.parse(sessionStorage.getItem('passengerData'));
-    
-            const passengerSeats = {};
-            const confirmedSeats = new Map(); // Map to store confirmed seats for each passenger
-            const selectedSeats = {}; // Object to store selected seats for each passenger
-            const finished = {}; // Function to update selected seat for a passenger
-    
-    
-            let seatSelectionText = `
-            <h4>${flight.origin} <i class="ri-flight-takeoff-line"></i> ${flight.destination}</h4>`;
-        
-            for(let i=0; i<passengersData.length; i++){
-                let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
-                seatSelectionText += `<div class="each-passenger-seat" data-passenger="${fullName}">
-                
-                <h5>${fullName}</h5>
-                <p>Seat number: <span class="selected-seat-span">No seat selected</span></p>
-            </div>`;
-    
-    
-             // Event listener for seat selection
-            const seats = document.querySelectorAll('.seat');
-            seats.forEach(seat => {
-                seat.addEventListener('click', function() {
-                    const selectedPassenger = document.querySelector('.each-passenger-seat.selected');
-                    if (selectedPassenger) {
-                        const passengerName = selectedPassenger.dataset.passenger;
-                        const seatNumber = seat.textContent;;
-                        // Check if seat is already confirmed
-                        if (!isSeatNumberExists(confirmedSeats, seatNumber)) {
-                            // Remove 'selected' class from previously selected seat
-                            const prevSelectedSeat = selectedSeats[passengerName];
-                            if (prevSelectedSeat) {
-                                const confirmationBox = document.querySelector('.confirmation-box');
-                                if (confirmationBox) {
-                                    confirmationBox.remove();
-                                }
-                                prevSelectedSeat.classList.remove('selected');
-                            }
-            
-                            // Update selected seat for the passenger
-                            updateSelectedSeat(passengerSeats, passengerName, seatNumber);
-                            selectedSeats[passengerName] = seat;
-                            seat.classList.add('selected');
-                            showConfirmationBox(finished, selectedSeats, confirmedSeats, passengerName, seatNumber);
-            
-                            // // Reload the page
-                            // location.reload();
-                        } else {
-                            alert('Seat already confirmed. Please choose another seat.');
-                        }
-                    }
-                });
-            });
+        let storedTickets = JSON.parse(localStorage.getItem('bookingsData')) || [];
+        let flightQuery = JSON.parse(sessionStorage.getItem('selectedFlight'));
+        let occupiedSeats = [];
+        for(let i=0; i<storedTickets.length;i++){
+            for(let j=0; j<storedTickets[i].length; j++){
+                if(storedTickets[i][j]['flight'].origin === flightQuery.origin && storedTickets[i][j]['flight'].destination === flightQuery.destination && storedTickets[i][j]['flight'].departure===flightQuery.departure){
+                    occupiedSeats.push(storedTickets[i][j]['seat']);
+                }
             }
-        
-            $('.seat-selection').append(seatSelectionText);
-            
-        
-            const passengers = document.querySelectorAll('.each-passenger-seat');
-    
-            passengers.forEach(passenger => {
-                passenger.addEventListener('click', function() {
-                    passengers.forEach(p => p.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-    
-            $('.seat-selection').append(`<div class="proceed-btn-container-in-seat">
-                <button class="btn" id="nextAddOnsBtn">NEXT: ADD-ONS</button>
-                <button class="btn" id="toPaymentBtnSeat">SKIP TO PAYMENT</button>
-                </div>`);
-
-            return confirmedSeats;
-            
-        
         }
+        
+        $('.seat').each(function() {
+            let seatNumber = $(this).text().trim();
+    
+            for (let seat of occupiedSeats) {
+                if(seat.trim() === seatNumber){
+                    $(this).addClass('confirmed');
+    
+                }
+            }
+        });
+
+        let flight = JSON.parse(sessionStorage.getItem('selectedFlight'));
+        let passengersData = JSON.parse(sessionStorage.getItem('passengerData'));
+
+        const passengerSeats = {};
+        const confirmedSeats = new Map(); // Map to store confirmed seats for each passenger
+        const selectedSeats = {}; // Object to store selected seats for each passenger
+        const finished = {}; // Function to update selected seat for a passenger
+
+
+        let seatSelectionText = `
+        <h4>${flight.origin} <i class="ri-flight-takeoff-line"></i> ${flight.destination}</h4>`;
+    
+        for(let i=0; i<passengersData.length; i++){
+            let fullName = passengersData[i]['personal'].title + ' ' + passengersData[i]['personal'].firstName + ' ' + passengersData[i]['personal'].lastName;
+            seatSelectionText += `<div class="each-passenger-seat" data-passenger="${fullName}">
+            
+            <h5>${fullName}</h5>
+            <p>Seat number: <span class="selected-seat-span">No seat selected</span></p>
+        </div>`;
+
+
+            // Event listener for seat selection
+        const seats = document.querySelectorAll('.seat');
+        seats.forEach(seat => {
+            seat.addEventListener('click', function() {
+                const selectedPassenger = document.querySelector('.each-passenger-seat.selected');
+                if (selectedPassenger) {
+                    const passengerName = selectedPassenger.dataset.passenger;
+                    const seatNumber = seat.textContent;;
+                    // Check if seat is already confirmed
+                    if (!isSeatNumberExists(confirmedSeats, seatNumber) && !isSeatOccupied(occupiedSeats, seatNumber)) {
+                        // Remove 'selected' class from previously selected seat
+                        const prevSelectedSeat = selectedSeats[passengerName];
+                        if (prevSelectedSeat) {
+                            const confirmationBox = document.querySelector('.confirmation-box');
+                            if (confirmationBox) {
+                                confirmationBox.remove();
+                            }
+                            prevSelectedSeat.classList.remove('selected');
+                        }
+        
+                        // Update selected seat for the passenger
+                        updateSelectedSeat(passengerSeats, passengerName, seatNumber);
+                        selectedSeats[passengerName] = seat;
+                        seat.classList.add('selected');
+                        showConfirmationBox(finished, selectedSeats, confirmedSeats, passengerName, seatNumber);
+        
+                        // // Reload the page
+                        // location.reload();
+                    } else {
+                        alert('Seat already booked. Please choose another seat.');
+                    }
+                }
+            });
+        });
+        }
+    
+        $('.seat-selection').append(seatSelectionText);
+        
+    
+        const passengers = document.querySelectorAll('.each-passenger-seat');
+
+        passengers.forEach(passenger => {
+            passenger.addEventListener('click', function() {
+                passengers.forEach(p => p.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        $('.seat-selection').append(`<div class="proceed-btn-container-in-seat">
+            <button class="btn" id="nextAddOnsBtn">NEXT: ADD-ONS</button>
+            <button class="btn" id="toPaymentBtnSeat">SKIP TO PAYMENT</button>
+            </div>`);
+
+        return confirmedSeats;
+        
+    
+    }
 }
 
 function createMenuItem(item) {
@@ -690,6 +712,16 @@ function createMenuItem(item) {
         </div>
     `;
     return menuItem;
+}
+
+function isSeatOccupied(occupiedSeats, seatNumber){
+    for(let seat of occupiedSeats){
+        if(seat === seatNumber){
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function isSeatNumberExists(seatMap, seatNumber) {
@@ -740,37 +772,6 @@ function populateDropdown(clickedBtn) {
 function selectNationality(clickedBtn, nationality) {
     $(clickedBtn).text(nationality); // Update the text of the clicked button
 }
-
-// function savePassengerData() {
-//     const passengerData = [];
-
-//     $('.passenger-data-container').each(function(index) {
-//         const personalDetails = $(this).find('.personal-details-row input');
-//         const contactDetails = $(this).find('.contact-details-row input');
-
-//         const nationality = $(this).find('.dropbtn').text();
-
-//         const passengerInfo = {
-//             personal: {
-//                 title: capitalize(personalDetails.eq(0).val()),
-//                 firstName: capitalize(personalDetails.eq(1).val()),
-//                 lastName: capitalize(personalDetails.eq(2).val()),
-//                 nationality: nationality,
-//                 passport: personalDetails.eq(3).val(),
-//                 issuePlace: personalDetails.eq(4).val(),
-//                 expiry: personalDetails.eq(5).val()
-//             },
-//             contact: {
-//                 email: contactDetails.eq(0).val(),
-//                 phoneNumber: contactDetails.eq(1).val()
-//             }
-//         };
-
-//         passengerData.push(passengerInfo);
-//     });
-
-//     sessionStorage.setItem('passengerData', JSON.stringify(passengerData));
-// }
 
 function savePassengerData() {
     let needData = false;
